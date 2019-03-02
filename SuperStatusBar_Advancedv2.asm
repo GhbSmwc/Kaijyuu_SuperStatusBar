@@ -3,6 +3,10 @@
 incsrc "StatusBarDefines/SA1Defines.asm"
 incsrc "StatusBarDefines/StatusBarDefines.asm"
 
+print ""
+print "Super Status bar RAM range (inclusive): $", hex(!RAM_BAR), " to $", hex(!RAM_BAR+319)
+print ""
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Hijacks:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

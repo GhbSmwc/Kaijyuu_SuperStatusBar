@@ -19,13 +19,13 @@ Contents:
 	the tile properties themselves in-game.
 
 	The super status bar patch's data is formated like this:
-		!RAM_BAR+0	;>Topmost and leftmost tile number
-		!RAM_BAR+1	;>Same as above, but properties (YXPCCCTT)
-		!RAM_BAR+2	;>Topmost, second leftmost tile
-		!RAM_BAR+3	;>Same as above, but tile properties
-		!RAM_BAR+4	;>Topmost, third leftmost tile
-		!RAM_BAR+5	;>Same as above, but tile properties
-		...		;>Will keep going rightwards and the next row downwards.
+		!RAM_BAR+0 ($7FA000/$404000 default)	;>Topmost and leftmost tile number
+		!RAM_BAR+1 ($7FA001/$404001 default)	;>Same as above, but properties (YXPCCCTT)
+		!RAM_BAR+2 ($7FA002/$404002 default)	;>Topmost, second leftmost tile
+		!RAM_BAR+3 ($7FA003/$404003 default)	;>Same as above, but tile properties
+		!RAM_BAR+4 ($7FA004/$404004 default)	;>Topmost, third leftmost tile
+		!RAM_BAR+5 ($7FA005/$404005 default)	;>Same as above, but tile properties
+		...					;>Will keep going rightwards and the next row downwards.
 
 	check out [ASSB_map.png] and [RAM_BAR_MemoryLocater.html] for more information.
 	
@@ -77,14 +77,28 @@ Contents:
 		DEX #2				;>Every loop, subtract X by 2 (Moves a full tile back, instead of a "half-tile")
 		BPL .Loop
 		-------------------------------------------------------
-	If you are making hybrid codes that write to the status bar, I recommend using the define !StatusBarFormat
-	and inform the user to set this to $01 if:
-		the format is 1-byte per tile for SMW's status bar, and Ladida's
-		status bar patches (there are 2 bytes, but are on separate tables)
-	and $02 for this status bar patch (Overworld border plus patch is the same format, btw), and have the code
-	that writes (STAs) to !StatusBarLocation+(x*!StatusBarFormat) where x is a number of tiles from
-	!StatusBarLocation, and for loops, do this (previous example):
+	If you are making hybrid compatibility codes that write to the status bar, I recommend using the
+	define !StatusBarFormat and inform the user to set this to $01 or $02:
+		$01 = SMW/SMB3/Minimalistic status bar patches. Each subsequent bytes is each tile.
+		$02 = Super Status Bar/Overworld border plus patch.
+	and have the code that writes (STA) also use the define:
 		-------------------------------------------------------
+		;Write "123"
+		!StatusBarFormat = $02
+		!StatusBarLocation = $7FA000
+		
+		LDA #$01
+		STA !StatusBarLocation
+		LDA #$02
+		STA !StatusBarLocation+(1*!StatusBarFormat)
+		LDA #$03
+		STA !StatusBarLocation+(2*!StatusBarFormat)
+		
+		;!StatusBarLocation+(x*!StatusBarFormat) where x is what tile.
+		-------------------------------------------------------
+	And for loops (again, writes "000"):
+		-------------------------------------------------------
+		!StatusBarFormat = $02
 		!StatusBarLocation = $7FA000
 
 		LDX #($03-1)*!StatusBarFormat	;>loop 3 times, minus 1 (Indexes from 0 to 2, or 0 to 4 depending on the format)
@@ -92,7 +106,7 @@ Contents:
 
 		.Loop
 		STA !StatusBarLocation,x	;>write at [!StatusBarLocation+0, +1, +2] or [!StatusBarLocation+0, +2, +4], depends on format.
-		DEX #!StatusBarFormat		;>Every loop, subtract X by 1 or 2 (Always moves a full tile back)
+		DEX #!StatusBarFormat		;>Every loop, subtract X by 1 or 2 (Always moves a full tile back), if X is FF or FE, end loop.
 		BPL .Loop
 		-------------------------------------------------------
 	and now you're done. Of course, !StatusBarLocation can be at !RAM_BAR+x where X is the even number (so it
@@ -104,12 +118,12 @@ Contents:
 	heads-up-*DISPLAY*. For codes that move the counter around or disabling certain things, you have to disable
 	or edit them *ON THIS PATCH*. A good example is the Metroid and SMB2 (titled
 	"SMW Health Bar - Bugfix and Alternative") health patch. Mine however, have codes already based on uberasm
-	tool and does not hijacks any of SMW's status bar code ().
+	tool and does not hijacks any of SMW's status bar code (most of them are already used the hybrid define).
 -------------------------------------------------------------------------------------------------------------------
 2: Patches that does hex-edits tiles that are not controlled by a routine.
 
 	This shouldn't be too hard, since most of it doesn't use indexed storing, for "hex edits" of the status
-	bar, simply remove the block that has org $xxxxxx where x is around 008C81. For example from the metroid HP
+	bar, simply remove the block that has org $xxxxxx where x is around $008C81. For example from the metroid HP
 	patch:
 
 		org $8C89 ; Status bar rearangeing
@@ -132,8 +146,8 @@ Contents:
 -------------------------------------------------------------------------------------------------------------------
 3: Other notes:
 
-	-There is something going on with the luigi's name on the ASSB, If you play as luigi and are in a level, the
-	 last tile of the name, the letter "I" will glitch and show a top-half portion of the large number 0 (that
-	 was used for the bonus stars counter). I check the tile properties table for that tile and couldn't find
-	 why that is happening. If you found a fix for that, please PM me (GreenHammerBro) on smw central, thanks.
-	 Edit: Thanks goes to DiscoTheBat for fixing that issue. EDIT: this is now fixed.
+	-[fixed] There is something going on with the luigi's name on the ASSB, If you play as luigi and are in a
+	 level, the last tile of the name, the letter "I" will glitch and show a top-half portion of the large
+	 number 0 (that was used for the bonus stars counter). I check the tile properties table for that tile and
+	 couldn't find why that is happening. If you found a fix for that, please PM me (GreenHammerBro) on smw
+	 central, thanks. Edit: Thanks goes to DiscoTheBat for fixing that issue.
