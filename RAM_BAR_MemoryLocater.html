@@ -54,6 +54,15 @@ didn't change the default RAM address and are not using SA-1).</li>
 <span id="RAMTable"></span>
 
 <script>
+	//check if the user presses ENTER.
+		var RAM_BAR_Address = document.getElementById("FreeramRamBar")
+		RAM_BAR_Address.addEventListener("keyup", function(event) {
+			if (event.keyCode === 13) {
+				Calculate();
+			}
+		});
+
+
 	function Calculate() {
 		var TileCount = 0
 		var StartingRAMAddress = parseInt(document.getElementById("FreeramRamBar").value, 16)
