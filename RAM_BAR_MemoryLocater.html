@@ -18,7 +18,6 @@ of:
 
 Notes:
 <ul>
-<li>If you get <kbd>NaN</kbd>, you've entered a blank box or had invalid characters in it.</li>
 <li>Numbers prefixed with a dollar sign <kbd>$</kbd> means the number is a hexadecimal value, a number without any prefix is a decimal number.</li>
 <li><b>Tile x ($x)</b> refers to what tile in the order from left to right and top to bottom (the same way text are being read and written in most countries). As there are a total of 160 tiles (numbered from 0 to 159).</li>
 <li>The &ldquo;<b>Coordinate</b>&rdquo; refers to the position (<kbd>(XPosition, YPosition)</kbd>, in units of 8x8 tiles) of the tile on-screen, relative to the top-left corner. X moves right as it increases, and Y moves
@@ -67,9 +66,14 @@ didn't change the default RAM address and are not using SA-1).</li>
 		var TileCount = 0
 		var StartingRAMAddress = parseInt(document.getElementById("FreeramRamBar").value, 16)
 		
-		//Due to how [.innerHTML] works, it automatically closes any unclosed HTML tags, so a way around it is
-		//to put the entire HTML code into a variable, then .innerHTML that variable.
-			var OutputHTML = "" //Reset so it doesn't add even more stuff when pressing submit again.
+		if (isNaN(StartingRAMAddress) == true) {
+			StartingRAMAddress = parseInt("7FA000", 16)
+			document.getElementById("FreeramRamBar").value = "7FA000"
+		}
+		
+		//Due to how [.innerHTML] works, most browsers automatically closes any unclosed HTML tags, so a way around it is
+		//to put the entire HTML text into a variable as a string, then .innerHTML that variable.
+			var OutputHTML = "" //Reset so it doesn't add even more stuff when the user enters the info again.
 		//Display entire memory range
 			OutputHTML += "<kbd>Entire RAM range: $" + (StartingRAMAddress).toString(16) + " (!RAM_BAR+$0) to $" + (StartingRAMAddress + 319).toString(16) + " (!RAM_BAR+$13F)</kbd>"
 			
