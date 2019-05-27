@@ -43,7 +43,7 @@ the regions and tile locations table following the input you entered).</li>
 didn't change the default RAM address and are not using SA-1).</li>
 </ol>
 </div>
-<kbd>!RAM_BAR = $<input type="text" list="StatusBarRAMTileList" id="FreeramRamBar" value ="" maxlength="6"></kbd><button type="button" onclick="Calculate()">Submit</button>
+<kbd>!RAM_BAR = $<input type="text" list="StatusBarRAMTileList" id="FreeramRamBar" value ="" maxlength="6"></kbd><button type="button" onclick="Calculate()">Submit</button><button type="button" onclick="Reset()">Reset</button>
 
 <datalist id="StatusBarRAMTileList">
 <option value="7FA000">Default RAM address</option>
@@ -61,7 +61,10 @@ didn't change the default RAM address and are not using SA-1).</li>
 			}
 		});
 
-
+	function Reset() {
+		document.getElementById("FreeramRamBar").value = ""
+		document.getElementById("RAMTable").innerHTML = ""
+	}
 	function Calculate() {
 		var TileCount = 0
 		var StartingRAMAddress = parseInt(document.getElementById("FreeramRamBar").value, 16)
