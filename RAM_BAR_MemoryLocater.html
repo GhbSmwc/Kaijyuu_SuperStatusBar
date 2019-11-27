@@ -7,8 +7,26 @@
 			}
 		</style>
 	</head>
+<body onload="Calculate()">
+<div style="max-width:588px;">You can actually find the address of a given XY coordinate using a formula:<br>
+<br><kbd>AddressOffset = (X * $02) + (Y * $40) + P</kbd><br><br>
 
-<div style="max-width:588px;">You may be wondering why I made this even though there is a readme stating the tile you want to edit can be calculated via <kbd>AddressOffset = (X * $02) + (Y * $40) + P</kbd> and that
+Where:
+<ul>
+<li><kbd>X</kbd> and <kbd>Y</kbd> values are integer coordinates, in units of 8x8 tiles:
+<ul>
+<li>X (valid in range 0-31 ($00-$1F) inclusive) starting at the left at $00 increasing going rightwards.</li>
+<li>Y (valid in range 0-4 ($00-$04) inclusive) starting at the top at $00 increasing going downwards. Ranges from $00 to $04</li>
+</ul>
+</li>
+<li><kbd>P</kbd> is the properties:
+<ul>
+<li><kbd>P = 0</kbd> if you wanted the <kbd>TTTTTTTT</kbd> tile number.</li>
+<li><kbd>P = 1</kbd> if you wanted the <kbd>YXPCCCTT</kbd> tile properties.</li>
+</ul>
+</li>
+</ul>
+and that
 the default RAM address to use have zeroes in the lower bytes ($7fA<b>000</b>, which makes adding as replacing the zeros with the offset), this is here to make it even easier in the case
 of:
 <ul>
@@ -43,7 +61,7 @@ the regions and tile locations table following the input you entered).</li>
 didn't change the default RAM address and are not using SA-1).</li>
 </ol>
 </div>
-<kbd>!RAM_BAR = $<input type="text" list="StatusBarRAMTileList" id="FreeramRamBar" value ="" maxlength="6"></kbd><button type="button" onclick="Calculate()">Submit</button><button type="button" onclick="Reset()">Reset</button>
+<kbd>!RAM_BAR = $<input type="text" list="StatusBarRAMTileList" id="FreeramRamBar" value ="7FA000" maxlength="6" onchange="Calculate()"></kbd><button type="button" onclick="Reset()">Reset</button>
 
 <datalist id="StatusBarRAMTileList">
 <option value="7FA000">Default RAM address</option>
@@ -62,23 +80,24 @@ didn't change the default RAM address and are not using SA-1).</li>
 		});
 
 	function Reset() {
-		document.getElementById("FreeramRamBar").value = ""
-		document.getElementById("RAMTable").innerHTML = ""
+		document.getElementById("FreeramRamBar").value = "7FA000"
+		Calculate()
 	}
 	function Calculate() {
+		document.getElementById("RAMTable").innerHTML = ""
 		var TileCount = 0
-		var StartingRAMAddress = parseInt(document.getElementById("FreeramRamBar").value, 16)
+		var StartingRAMAddress = clamp(parseInt(document.getElementById("FreeramRamBar").value, 16), 0, parseInt("FFFFFF", 16))
 		
 		if (isNaN(StartingRAMAddress) == true) {
 			StartingRAMAddress = parseInt("7FA000", 16)
-			document.getElementById("FreeramRamBar").value = "7FA000"
 		}
+		document.getElementById("FreeramRamBar").value = StartingRAMAddress.toString(16).toUpperCase()
 		
 		//Due to how [.innerHTML] works, most browsers automatically closes any unclosed HTML tags, so a way around it is
 		//to put the entire HTML text into a variable as a string, then .innerHTML that variable.
 			var OutputHTML = "" //Reset so it doesn't add even more stuff when the user enters the info again.
 		//Display entire memory range
-			OutputHTML += "<kbd>Entire RAM range: $" + (StartingRAMAddress).toString(16) + " (!RAM_BAR+$0) to $" + (StartingRAMAddress + 319).toString(16) + " (!RAM_BAR+$13F)</kbd>"
+			OutputHTML += "<kbd>Entire RAM range: $" + (StartingRAMAddress).toString(16).toUpperCase() + " (!RAM_BAR+$0) to $" + (StartingRAMAddress + 319).toString(16).toUpperCase() + " (!RAM_BAR+$13F)</kbd>"
 			
 		//Obtain subrange divided into each row.
 			var RowCount = 0
@@ -86,8 +105,8 @@ didn't change the default RAM address and are not using SA-1).</li>
 			while (RowCount < 5) {
 				OutputHTML += "<tr>"
 				OutputHTML += "<td>Row " + RowCount + "</td>"
-				OutputHTML += "<td><kbd>$" + (StartingRAMAddress+(RowCount*64)).toString(16) + " (!RAM_BAR+$" + (RowCount*64).toString(16) +")</kbd></td>"
-				OutputHTML += "<td><kbd>$" + (StartingRAMAddress+((RowCount+1)*64)-1).toString(16) + " (!RAM_BAR+$" + (((RowCount+1)*64)-1).toString(16) + ")</kbd></td>"
+				OutputHTML += "<td><kbd>$" + (StartingRAMAddress+(RowCount*64)).toString(16).toUpperCase() + " (!RAM_BAR+$" + (RowCount*64).toString(16).toUpperCase() +")</kbd></td>"
+				OutputHTML += "<td><kbd>$" + (StartingRAMAddress+((RowCount+1)*64)-1).toString(16).toUpperCase() + " (!RAM_BAR+$" + (((RowCount+1)*64)-1).toString(16).toUpperCase() + ")</kbd></td>"
 				OutputHTML += "</tr>"
 				RowCount++
 			}
@@ -101,10 +120,10 @@ didn't change the default RAM address and are not using SA-1).</li>
 				OutputHTML += "<tr><th colspan='3'><center>Row " + (Math.floor(TileCount/32)) + "</center></th></tr>"
 			}
 			OutputHTML += "<tr>"
-			OutputHTML += "<td><kbd>Tile: " + TileCount + " ($" + TileCount.toString(16) + ")"
-			OutputHTML += " Coordinate: (" + (TileCount % 32) + "," + (Math.floor(TileCount/32)) + ") (($" + (TileCount % 32).toString(16) + ",$" + (Math.floor(TileCount/32)).toString(16) + "))</kbd></td>"
-			OutputHTML += "<td><kbd>$" + (StartingRAMAddress + (TileCount*2)).toString(16) + " (!RAM_BAR+$" + (TileCount*2).toString(16) + ")</kbd></td>"
-			OutputHTML += "<td><kbd>$" + (StartingRAMAddress + (TileCount*2) + 1).toString(16) + " (!RAM_BAR+$" + ((TileCount*2) + 1).toString(16) + ")</kbd></td>"
+			OutputHTML += "<td><kbd>Tile: " + TileCount + " ($" + TileCount.toString(16).toUpperCase() + ")"
+			OutputHTML += " Coordinate: (" + (TileCount % 32) + "," + (Math.floor(TileCount/32)) + ") (($" + (TileCount % 32).toString(16).toUpperCase() + ",$" + (Math.floor(TileCount/32)).toString(16).toUpperCase() + "))</kbd></td>"
+			OutputHTML += "<td><kbd>$" + (StartingRAMAddress + (TileCount*2)).toString(16).toUpperCase() + " (!RAM_BAR+$" + (TileCount*2).toString(16).toUpperCase() + ")</kbd></td>"
+			OutputHTML += "<td><kbd>$" + (StartingRAMAddress + (TileCount*2) + 1).toString(16).toUpperCase() + " (!RAM_BAR+$" + ((TileCount*2) + 1).toString(16).toUpperCase() + ")</kbd></td>"
 			OutputHTML += "</tr>"
 			
 			
@@ -122,7 +141,10 @@ didn't change the default RAM address and are not using SA-1).</li>
 	function ShrinkImage() {
 		document.getElementById("StatusBarTileGrid").innerHTML = '<img onclick="ExpandImage()" width="100" src="RAM_BAR_MemoryLocater_files/StatusBarGridMap.png">'
 	}
-
-
-
+	function clamp(num, min, max) {
+		if (isNaN(num) == true) {
+			num = 0
+		}
+		return num <= min ? min : num >= max ? max : num;
+	}
 </script>
