@@ -13,10 +13,10 @@
 
 Where:
 <ul>
-<li><kbd>X</kbd> and <kbd>Y</kbd> values are integer coordinates, in units of 8x8 tiles:
+<li><kbd>X</kbd> and <kbd>Y</kbd> values are integer coordinates, in units of 8x8 tiles (integers only):
 <ul>
 <li>X (valid in range 0-31 ($00-$1F) inclusive) starting at the left at $00 increasing going rightwards.</li>
-<li>Y (valid in range 0-4 ($00-$04) inclusive) starting at the top at $00 increasing going downwards. Ranges from $00 to $04</li>
+<li>Y (valid in range 0-4 ($00-$04) inclusive) starting at the top at $00 increasing going downwards.</li>
 </ul>
 </li>
 <li><kbd>P</kbd> is the properties:
@@ -61,8 +61,7 @@ the regions and tile locations table following the input you entered).</li>
 didn't change the default RAM address and are not using SA-1).</li>
 </ol>
 </div>
-<kbd>!RAM_BAR = $<input type="text" list="StatusBarRAMTileList" id="FreeramRamBar" value ="7FA000" maxlength="6" onchange="Calculate()"></kbd><button type="button" onclick="Reset()">Reset</button>
-
+<kbd>!RAM_BAR = $<input type="text" list="StatusBarRAMTileList" id="FreeramRamBar" value ="7FA000" maxlength="6" onchange="Calculate()"></kbd><button type="button" onclick="IncreaseDecreaseRAM(1)">+</button><button type="button" onclick="IncreaseDecreaseRAM(-1)">-</button><button type="button" onclick="IncreaseDecreaseRAM(2)">+2</button><button type="button" onclick="IncreaseDecreaseRAM(-2)">-2</button><button type="button" onclick="Reset()">Reset</button>
 <datalist id="StatusBarRAMTileList">
 <option value="7FA000">Default RAM address</option>
 <option value="404000">Default SA-1 RAM address</option>
@@ -72,15 +71,18 @@ didn't change the default RAM address and are not using SA-1).</li>
 
 <script>
 	//check if the user presses ENTER.
-		var RAM_BAR_Address = document.getElementById("FreeramRamBar")
-		RAM_BAR_Address.addEventListener("keyup", function(event) {
-			if (event.keyCode === 13) {
-				Calculate();
-			}
-		});
-
+	//	var RAM_BAR_Address = document.getElementById("FreeramRamBar")
+	//	RAM_BAR_Address.addEventListener("keyup", function(event) {
+	//		if (event.keyCode === 13) {
+	//			Calculate();
+	//		}
+	//	});
 	function Reset() {
 		document.getElementById("FreeramRamBar").value = "7FA000"
+		Calculate()
+	}
+	function IncreaseDecreaseRAM(ChangeBy) {
+		document.getElementById("FreeramRamBar").value = clamp((parseInt(document.getElementById("FreeramRamBar").value, 16) + parseInt(ChangeBy, 10)), 0, parseInt("FFFFFF", 16)).toString(16).toUpperCase()
 		Calculate()
 	}
 	function Calculate() {
