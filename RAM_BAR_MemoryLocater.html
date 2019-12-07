@@ -104,20 +104,19 @@ didn't change the default RAM address and are not using SA-1).</li>
 		//Obtain subrange divided into each row.
 			var RowCount = 0
 			OutputHTML += "<table><tr><th>what row</th><th>Starting address</th><th>Ending address</th></tr>"
-			while (RowCount < 5) {
+			for (RowCount = 0; RowCount < 5; RowCount++) {
 				OutputHTML += "<tr>"
 				OutputHTML += "<td>Row " + RowCount + "</td>"
 				OutputHTML += "<td><kbd>$" + (StartingRAMAddress+(RowCount*64)).toString(16).toUpperCase() + " (!RAM_BAR+$" + (RowCount*64).toString(16).toUpperCase() +")</kbd></td>"
 				OutputHTML += "<td><kbd>$" + (StartingRAMAddress+((RowCount+1)*64)-1).toString(16).toUpperCase() + " (!RAM_BAR+$" + (((RowCount+1)*64)-1).toString(16).toUpperCase() + ")</kbd></td>"
 				OutputHTML += "</tr>"
-				RowCount++
 			}
 			OutputHTML += "</table><br>"
 		
 		var RAMAddress = document.getElementById("FreeramRamBar").value
 		
 		OutputHTML += "<table><tr><th>Tile location</th><th>Tile number byte (TTTTTTTT)</th><th>Tile properties byte (YXPCCCTT)</th></tr>"
-		while (TileCount < 160) {
+		while (TileCount = 0; TileCount < 160; TileCount++) {
 			if ((TileCount % 32) == 0) {
 				OutputHTML += "<tr><th colspan='3'><center>Row " + (Math.floor(TileCount/32)) + "</center></th></tr>"
 			}
@@ -127,9 +126,6 @@ didn't change the default RAM address and are not using SA-1).</li>
 			OutputHTML += "<td><kbd>$" + (StartingRAMAddress + (TileCount*2)).toString(16).toUpperCase() + " (!RAM_BAR+$" + (TileCount*2).toString(16).toUpperCase() + ")</kbd></td>"
 			OutputHTML += "<td><kbd>$" + (StartingRAMAddress + (TileCount*2) + 1).toString(16).toUpperCase() + " (!RAM_BAR+$" + ((TileCount*2) + 1).toString(16).toUpperCase() + ")</kbd></td>"
 			OutputHTML += "</tr>"
-			
-			
-			TileCount++
 		}
 		OutputHTML += "</table>"
 		
