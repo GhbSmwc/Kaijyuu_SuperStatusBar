@@ -116,7 +116,7 @@ didn't change the default RAM address and are not using SA-1).</li>
 		var RAMAddress = document.getElementById("FreeramRamBar").value
 		
 		OutputHTML += "<table><tr><th>Tile location</th><th>Tile number byte (TTTTTTTT)</th><th>Tile properties byte (YXPCCCTT)</th></tr>"
-		while (TileCount = 0; TileCount < 160; TileCount++) {
+		for (TileCount = 0; TileCount < 160; TileCount++) {
 			if ((TileCount % 32) == 0) {
 				OutputHTML += "<tr><th colspan='3'><center>Row " + (Math.floor(TileCount/32)) + "</center></th></tr>"
 			}

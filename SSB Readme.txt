@@ -257,3 +257,7 @@ version history: (M/D/Y, from oldest to newest)
 	-The javascript HTML file [RAM_BAR_MemoryLocater.html] now have an advanced and easier tutorial to edit tiles
 	 on the status bar.
 	-Removed the item list in this readme, due to its redundancy.
+3/2/2019 2.2 small updates
+	-Fixed the "()" in the GHB notes.
+	-Improved the relative address in the GHB notes.
+	-ASM files now display the memory range usage upon patching.
