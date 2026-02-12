@@ -12,10 +12,10 @@ print ""
 ;Hijacks:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ORG $008292					;\Move the cutoff Irq line (not for smw's mode 7 bosses however).
-	LDY #!IRQ_line_Y_pos	;/
+	LDY #!Setting_SuperStatusBar_IRQYPos	;/
 
 ORG $00835C					;\Move the cutoff Irq line (for smw's mode 7 bosses).
-	LDY #!IRQ_line_Y_pos	;/
+	LDY #!Setting_SuperStatusBar_IRQYPos	;/
 
 ORG $008D8A			;\hijack status bar initilization routine
 	autoclean JSL MAIN_2	;|
@@ -35,7 +35,7 @@ SKIP_UNUSED:
 
 freecode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;Tables for tiles.
+;Tables for default tiles. NOTE: This only applies to newly added tiles. Old ones reuses SMW's $008C81-$008CFE.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DATA_TILES:			; This is the data for the tiles not regularly uploaded by SMW
 	db $FC,$38		; First number is the tile number, second is the properties
@@ -260,7 +260,7 @@ UPLOAD_STATBAR9:
 	BPL UPLOAD_STATBAR9
 
       	LDA #$28                ; Recover old code
-      	STA $0F30+!addr        ; #$28 -> Timer frame counter 
+      	STA $0F30|!addr        ; #$28 -> Timer frame counter 
 
 DMA_STATBAR:
 
@@ -302,7 +302,7 @@ MAIN:	PHB
 	LDY #$001B
 	LDX #$00BA
 UPLOAD_STATBARA:
-	LDA $0EF9+!addr,Y		; Transfer status bar tiles from RAM
+	LDA $0EF9|!addr,Y		; Transfer status bar tiles from RAM
 	STA !RAM_BAR,X
 	DEX			; top middle of status bar
 	DEX
@@ -311,7 +311,7 @@ UPLOAD_STATBARA:
 	LDY #$001A		; low middle of status bar
 	LDX #$00FA
 UPLOAD_STATBARB:
-	LDA $0F15+!addr,Y
+	LDA $0F15|!addr,Y
 	STA !RAM_BAR,X
 	DEX
 	DEX
