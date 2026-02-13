@@ -58,125 +58,143 @@ freecode
 ;Tables for default tiles. NOTE: This only applies to newly added tiles. Old ones reuses SMW's $008C81-$008CFE.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DATA_TILES:			;\This is the data for the tiles not regularly uploaded by SMW
-	db $FC,$38		;|First number is the tile number, second is the properties
-	db $FC,$38		;|YXPCCCTT
-	db $FC,$38		;|Y = y flip, X = flip, P = priority, CCC = palette number (4 color palettes remember)
-	db $FC,$38		;|TT = page number
-	db $FC,$38		;|Ex: $38 = 00111000
-	db $FC,$38		;|priority bit set, palette 7 (of 8)
-	db $FC,$38		;|FC is a blank tile with SMW's original l3 graphics
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|This whole block is the top row of status bar tile space.
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;/
+	;This is the data for the tiles not regularly uploaded by SMW
+	;First number is the tile number, second is the properties
+	;YXPCCCTT
+	;Y = y flip, X = flip, P = priority, CCC = palette number (4 color palettes remember)
+	;TT = page number
+	;Ex: $38 = 00111000
+	;priority bit set, palette 7 (of 8)
+	;FC is a blank tile with SMW's original l3 graphics
+	;
+	;This whole block is the top row of status bar tile space.
+	db $FC,$38		;>(00, 00)
+	db $FC,$38		;>(01, 00)
+	db $FC,$38		;>(02, 00)
+	db $FC,$38		;>(03, 00)
+	db $FC,$38		;>(04, 00)
+	db $FC,$38		;>(05, 00)
+	db $FC,$38		;>(06, 00)
+	db $FC,$38		;>(07, 00)
+	db $FC,$38		;>(08, 00)
+	db $FC,$38		;>(09, 00)
+	db $FC,$38		;>(10, 00)
+	db $FC,$38		;>(11, 00)
+	db $FC,$38		;>(12, 00)
+	db $FC,$38		;>(13, 00)
+	db $FC,$38		;>(14, 00)
+	db $FC,$38		;>(15, 00)
+	db $FC,$38		;>(16, 00)
+	db $FC,$38		;>(17, 00)
+	db $FC,$38		;>(18, 00)
+	db $FC,$38		;>(19, 00)
+	db $FC,$38		;>(20, 00)
+	db $FC,$38		;>(21, 00)
+	db $FC,$38		;>(22, 00)
+	db $FC,$38		;>(23, 00)
+	db $FC,$38		;>(24, 00)
+	db $FC,$38		;>(25, 00)
+	db $FC,$38		;>(26, 00)
+	db $FC,$38		;>(27, 00)
+	db $FC,$38		;>(28, 00)
+	db $FC,$38		;>(29, 00)
+	db $FC,$38		;>(30, 00)
+	db $FC,$38		;>(31, 00)
 
-DATA_TILES2:			;\Start of second line, the first 14 8x8 spaces on second row
-	db $FC,$38		;|seen on ASSB map.png.
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;/
+DATA_TILES2:
+	;Start of second line, the first 14 8x8 spaces on second row.
+	db $FC,$38		;>(00, 01)
+	db $FC,$38		;>(01, 01)
+	db $FC,$38		;>(02, 01)
+	db $FC,$38		;>(03, 01)
+	db $FC,$38		;>(04, 01)
+	db $FC,$38		;>(05, 01)
+	db $FC,$38		;>(06, 01)
+	db $FC,$38		;>(07, 01)
+	db $FC,$38		;>(08, 01)
+	db $FC,$38		;>(09, 01)
+	db $FC,$38		;>(10, 01)
+	db $FC,$38		;>(11, 01)
+	db $FC,$38		;>(12, 01)
+	db $FC,$38		;>(13, 01)
 	;
 	; Item box would be here. Already DMA'd in SMW's regular code
 	; Not included here for compatibility with the status bar editor tool
 	;
 DATA_TILES3:
-	db $FC,$38		;\End of second line, The last 14 8x8 spaces (the right 14)
-	db $FC,$38		;|on the second row seen on ASSB_map.png.
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;/
+	;End of second line, The last 14 8x8 spaces (the right 14) on the second row
+	db $FC,$38		;>(18, 01)
+	db $FC,$38		;>(19, 01)
+	db $FC,$38		;>(20, 01)
+	db $FC,$38		;>(21, 01)
+	db $FC,$38		;>(22, 01)
+	db $FC,$38		;>(23, 01)
+	db $FC,$38		;>(24, 01)
+	db $FC,$38		;>(25, 01)
+	db $FC,$38		;>(26, 01)
+	db $FC,$38		;>(27, 01)
+	db $FC,$38		;>(28, 01)
+	db $FC,$38		;>(29, 01)
+	db $FC,$38		;>(30, 01)
+	db $FC,$38		;>(31, 01)
 DATA_TILES4:
 	; two tiles at the upper middle left
-	db $FC,$38		;\Third line, the first two 8x8 spaces (two tiles left from the NAME text).
-	db $FC,$38		;/
+	; Third line, the first two 8x8 spaces (two tiles left from the NAME text).
+	db $FC,$38		;>(00, 02)
+	db $FC,$38		;>(01, 02)
 DATA_TILES5:
 	; two tiles at the upper middle right
-	db $FC,$38		;\Third line, the last two 8x8 spaces (two tiles right from the coin counter
-	db $FC,$38		;/(not the coin and "X" symbol)).
+	; Third line, the last two 8x8 spaces (two tiles right from the coin counter (not the coin and "X" symbol)).
+	db $FC,$38		;(30, 02)
+	db $FC,$38		;(31, 02)
 DATA_TILES6:
 	; three tiles at the lower middle left
-	db $FC,$38		;\Fourth line, the first 3 8x8 spaces before the "X" symbol and lives counter.
-	db $FC,$38		;|
-	db $FC,$38		;/
+	; Fourth line, the first 3 8x8 spaces before the "X" symbol and lives counter.
+	db $FC,$38		;>(00, 03)
+	db $FC,$38		;>(01, 03)
+	db $FC,$38		;>(02, 03)
 DATA_TILES7:
 	; two tiles at the lower middle right
-	db $FC,$38		;\Fourth line, the last two 8x8 spaces after the last 0 on the score counter.
-	db $FC,$38		;/
+	; Fourth line, the last two 8x8 spaces after the last 0 on the score counter.
+	db $FC,$38		;>(30, 03)
+	db $FC,$38		;>(31, 03)
 DATA_TILES8:
 	; bottom row
-	db $FC,$38		;\Fifth line, the first 14 8x8 spaces.
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;/
+	; Fifth line, the first 14 8x8 spaces.
+	db $FC,$38		;>(00, 04)
+	db $FC,$38		;>(01, 04)
+	db $FC,$38		;>(02, 04)
+	db $FC,$38		;>(03, 04)
+	db $FC,$38		;>(04, 04)
+	db $FC,$38		;>(05, 04)
+	db $FC,$38		;>(06, 04)
+	db $FC,$38		;>(07, 04)
+	db $FC,$38		;>(08, 04)
+	db $FC,$38		;>(09, 04)
+	db $FC,$38		;>(10, 04)
+	db $FC,$38		;>(11, 04)
+	db $FC,$38		;>(12, 04)
+	db $FC,$38		;>(13, 04)
 	;
 	; Item box would be here. Already DMA'd in SMW's regular code
 	; Not included here for compatibility with the status bar editor tool
 	;
 DATA_TILES9:
-	db $FC,$38		;\Fifth line, the last 14 8x8 spaces.
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;|
-	db $FC,$38		;/
+	;Fifth line, the last 14 8x8 spaces.
+	db $FC,$38		;>(18, 04)
+	db $FC,$38		;>(19, 04)
+	db $FC,$38		;>(20, 04)
+	db $FC,$38		;>(21, 04)
+	db $FC,$38		;>(22, 04)
+	db $FC,$38		;>(23, 04)
+	db $FC,$38		;>(24, 04)
+	db $FC,$38		;>(25, 04)
+	db $FC,$38		;>(26, 04)
+	db $FC,$38		;>(27, 04)
+	db $FC,$38		;>(28, 04)
+	db $FC,$38		;>(29, 04)
+	db $FC,$38		;>(30, 04)
+	db $FC,$38		;>(31, 04)
 
 DMA_BAR:		db	$01,$18,!RAM_BAR,!RAM_BAR>>8,!RAM_BAR>>16,$40,$01
 ;^ ">>X", where x is how many times the number is divided by 2, so that it converts

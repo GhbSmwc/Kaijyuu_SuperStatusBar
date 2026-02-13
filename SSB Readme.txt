@@ -265,3 +265,4 @@ version history: (M/D/Y, from oldest to newest)
 	-Modernized HTML file (uses dark theme, no longer uses innerHTML).
 	-Defines now uses a coordinate-based system instead of offsets for the user to enter.
 	-Fixed an issue in SA-1 due to a fixed-DMA channel to use.
+	-Added tile coordinates for the default tiles provided by the patches.
