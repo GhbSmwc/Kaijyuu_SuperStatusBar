@@ -456,7 +456,7 @@ CODE_008E91:		CPY #$02
 CODE_008E93:		BNE CODE_008E85
 	endif ;>end of timer routine
 ;------------------------------------------------------------------
-	if !Setting_SuperStatusBar_Time_Enable != 1       ;>"if !define <> 1".
+	if !Setting_SuperStatusBar_Time_Enable == 0
 CODE_008E6F_OR_008E95:
 	endif
 CODE_008E95_IF_THEN:
