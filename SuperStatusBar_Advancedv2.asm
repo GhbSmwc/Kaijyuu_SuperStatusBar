@@ -55,7 +55,7 @@ ORG $0090CC
 freecode
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;Tables for default tiles. NOTE: This only applies to newly added tiles. Old ones reuses SMW's $008C81-$008CFE.
+;Tables for default tiles. NOTE: This only applies to newly added tiles. To edit those, see "ModifySMWVanillaTiles.asm"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DATA_TILES:			;\This is the data for the tiles not regularly uploaded by SMW
 	;This is the data for the tiles not regularly uploaded by SMW
