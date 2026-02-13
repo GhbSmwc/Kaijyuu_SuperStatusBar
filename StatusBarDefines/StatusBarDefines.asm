@@ -48,8 +48,8 @@
 	else
 		!Setting_SuperStatusBar_DMAChannel = 2
 	endif
-		;^Valid values 0~7. This is a DMA channel to use. You would normally set this to some other unused channel to
-		; prevent glitches (espically in SA-1).
+		;^Valid values 0~7. This is the DMA channel to use. You would normally set this to some other unused channel to
+		; prevent glitches with other HDMA/DMA effects and mode 7 bosses. By default it should work with vanilla and SA-1.
 ;Display settings
 	;Time (the digits, not the word "TIME")
 		!Setting_SuperStatusBar_Time_Enable = 1		;>display time limit: 0 = false (will be black squares on 1st and 2nd digits,

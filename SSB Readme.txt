@@ -264,7 +264,9 @@ version history: (M/D/Y, from oldest to newest)
 2/12/2026 2.3 changes
 	-Modernized HTML file (uses dark theme, no longer uses innerHTML).
 	-Defines now uses a coordinate-based system instead of offsets for the user to enter.
-	-Fixed an issue in SA-1 due to a fixed-DMA channel to use.
+	-Fixed an issue in SA-1 due to a fixed-DMA channel to use
+	 (thank you DrAnas - https://www.smwcentral.net/?p=profile&id=25222), breaking message boxes, mode 7 bosses
+	 due to a DMA channel conflict.
 	-Added tile coordinates in the comments for the default tiles provided by the patches.
 	-Added a hex edit patch for vanilla tiles to compensate the fact that the provided tables in the super status
 	 bar patches only defaults the tiles for newly added tiles, not the vanilla tiles.
