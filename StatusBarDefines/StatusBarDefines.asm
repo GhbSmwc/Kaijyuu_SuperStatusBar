@@ -22,7 +22,7 @@
 	
 ;Super status bar settings:
 ;Notes:
-; - XY positions ranges X:00-31 and Y:00-04, represents a position, in units of 8x8 tiles, and must be integers.
+; - XY positions ranges X:00~31 and Y:00~04, represents a position, in units of 8x8 tiles, and must be integers.
 ; -- Any XY position of a counter placed outside that range, or is a counter that spans multiple tiles placed so its second or later
 ;    tiles goes out of range, would write data at invalid RAM address (causes glitches, or crashes, depending on the resulting RAM).
 ; - Any multi-tile counters that would go past the right edge (X=31) would wrap back to the left and down 1 line like text.
@@ -35,15 +35,22 @@
 ;   than just making the timer invisible).
 ; - Tile positions and enabling/disabling only works on the advanced version of the SSB patch.
 ; - Default tile numbers and properties are in "DATA_TILES", or using Smallhacker's status bar editor. Note that this added table
-;   to the game is for new row of tiles. Original tiles not provided by this patch are from a reused vanilla table at $008C81-$008CFE:
+;   to the game is for new row of tiles. Original tiles not provided by this patch are from a reused vanilla table at $008C81~$008CFE:
 ;   https://smwc.me/m/smw/rom/008C81
 
+;Register settings
 	!Setting_SuperStatusBar_IRQYPos = $26
 		;^IRQ layer 3 cutoff Y position, in pixels. $26 by default. Higher value = further down the screen layer 3
 		; interrupt Y position. Normally you should leave this at $26. If you're not using the last row of 8x8 tiles,
 		; change this to $24.
-
-
+	if !sa1 == 0
+		!Setting_SuperStatusBar_DMAChannel = 1
+	else
+		!Setting_SuperStatusBar_DMAChannel = 2
+	endif
+		;^Valid values 0~7. This is a DMA channel to use. You would normally set this to some other unused channel to
+		; prevent glitches (espically in SA-1).
+;Display settings
 	;Time (the digits, not the word "TIME")
 		!Setting_SuperStatusBar_Time_Enable = 1		;>display time limit: 0 = false (will be black squares on 1st and 2nd digits,
 			;^Note that this alone doesn't disable time bonus on level completion.
@@ -92,13 +99,27 @@
 			; incsrcs to the same ASM file with a different path due to asar not being able to tell
 			; if the incsrc'ed file is the same file: https://github.com/RPGHacker/asar/issues/287
 			
-			;Yes, this if statement seems rendundant. But it some rare chance a future ASM resource need this define
-			;file rather than its own define file that have a define pointing to what this define file defines !RAM_BAR.
-			;This incsrc problem happens when having a tool ASM file's resource and the main ASM file both incsrc to a
-			;define file with a macro/define.
+			;^Yes, this if statement seems rendundant. But it some rare chance a future ASM resource need this define
+			; file rather than its own define file that have a define pointing to what this define file defines !RAM_BAR.
+			; This incsrc problem happens when having a tool ASM file's resource and the main ASM file both incsrc to a
+			; define file with a macro/define.
 			
 			function SuperStatusBarXYToAddr(x, y) = !RAM_BAR+(x*2)+(y*32*2)
+			
+			macro CheckSuperStatusBarXYPositionValid(x, y)
+				assert and(and(greaterequal(<x>, 0), lessequal(<x>, 31)), and(greaterequal(<y>, 0), lessequal(<y>, 4))), "Coordinate out of range. X valid 0~31, Y valid 0~4."
+			endmacro
 		endif
+	;This checks if values entered are wrong
+		%CheckSuperStatusBarXYPositionValid(!Setting_SuperStatusBar_Time_XPos, !Setting_SuperStatusBar_Time_YPos)
+		%CheckSuperStatusBarXYPositionValid(!Setting_SuperStatusBar_Score_XPos, !Setting_SuperStatusBar_Score_YPos)
+		%CheckSuperStatusBarXYPositionValid(!Setting_SuperStatusBar_Lives_XPos, !Setting_SuperStatusBar_Lives_YPos)
+		%CheckSuperStatusBarXYPositionValid(!Setting_SuperStatusBar_Coins_XPos, !Setting_SuperStatusBar_Coins_YPos)
+		%CheckSuperStatusBarXYPositionValid(!Setting_SuperStatusBar_PlayerName_XPos, !Setting_SuperStatusBar_PlayerName_YPos)
+		%CheckSuperStatusBarXYPositionValid(!Setting_SuperStatusBar_DragonCoin_XPos, !Setting_SuperStatusBar_DragonCoin_YPos)
+		%CheckSuperStatusBarXYPositionValid(!Setting_SuperStatusBar_BonusStars_XPos, !Setting_SuperStatusBar_BonusStars_YPos)
+		assert and(greaterequal(!Setting_SuperStatusBar_DMAChannel, 0), lessequal(!Setting_SuperStatusBar_DMAChannel, 7)), "Invalid DMA channel to use."
+	;Calculate some stuff for defines
 		!Setting_SuperStatusBar_Time_XYToAddress #= SuperStatusBarXYToAddr(!Setting_SuperStatusBar_Time_XPos, !Setting_SuperStatusBar_Time_YPos)
 		!Setting_SuperStatusBar_Score_XYToAddress #= SuperStatusBarXYToAddr(!Setting_SuperStatusBar_Score_XPos, !Setting_SuperStatusBar_Score_YPos)
 		!Setting_SuperStatusBar_Lives_XYToAddress #= SuperStatusBarXYToAddr(!Setting_SuperStatusBar_Lives_XPos, !Setting_SuperStatusBar_Lives_YPos)
@@ -106,6 +127,9 @@
 		!Setting_SuperStatusBar_PlayerName_XYToAddress #= SuperStatusBarXYToAddr(!Setting_SuperStatusBar_PlayerName_XPos, !Setting_SuperStatusBar_PlayerName_YPos)
 		!Setting_SuperStatusBar_DragonCoin_XYToAddress #= SuperStatusBarXYToAddr(!Setting_SuperStatusBar_DragonCoin_XPos, !Setting_SuperStatusBar_DragonCoin_YPos)
 		!Setting_SuperStatusBar_BonusStars_XYToAddress #= SuperStatusBarXYToAddr(!Setting_SuperStatusBar_BonusStars_XPos, !Setting_SuperStatusBar_BonusStars_YPos)
+		
+		!Setting_SuperStatusBar_Reg_43X0 #= $4300+(!Setting_SuperStatusBar_DMAChannel<<4)
+		!Setting_SuperStatusBar_Reg_DMAEnable = (1<<!Setting_SuperStatusBar_DMAChannel)
 ;Valid numbers for these offsets: $000-$13F
 ;Use even numbers ONLY!
 ;Properties (palette/ect) are set in the DATA_TILES tables, or using Smallhacker's status bar editor
