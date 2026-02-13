@@ -297,10 +297,10 @@ DMA_STATBAR:
 	LDX #$06
 DMA_LOOP:
 	LDA DMA_BAR,x
-	STA $4310,x
+	STA.w !Setting_SuperStatusBar_Reg_43X0,x
 	DEX
 	BPL DMA_LOOP	
-	LDA #$02
+	LDA.b #!Setting_SuperStatusBar_Reg_DMAEnable
 	STA $420B	
 
 	PLX
