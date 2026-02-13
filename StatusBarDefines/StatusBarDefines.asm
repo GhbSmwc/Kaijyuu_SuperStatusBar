@@ -22,7 +22,8 @@
 	
 ;Super status bar settings:
 ;Notes:
-; - XY positions ranges X:00~31 and Y:00~04, represents a position, in units of 8x8 tiles, and must be integers.
+; - XY positions ranges X:00~31 and Y:00~04, represents a position, in units of 8x8 tiles, and must be integers. They increases going
+;   rightwards and downwards.
 ; -- Any XY position of a counter placed outside that range, or is a counter that spans multiple tiles placed so its second or later
 ;    tiles goes out of range, would write data at invalid RAM address (causes glitches, or crashes, depending on the resulting RAM).
 ; - Any multi-tile counters that would go past the right edge (X=31) would wrap back to the left and down 1 line like text.

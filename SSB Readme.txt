@@ -121,6 +121,10 @@ I PUT A TILE ON THE BOTTOM ROW AND IT'S CUT OFF HALFWAY DOWN!
 	 spots on smwDisC that controls the IRQ, sorry) but don't worry; you'll unlikely gunna use
 	 smw's mode 7 bosses. If you have found a fix for mode 7 bosses, send me (GreenHammerBro) a
 	 PM to fix it.
+	 
+	-EDIT: This is now fixed. The define "!Setting_SuperStatusBar_IRQYPos" in
+	 "StatusBarDefines/StatusBarDefines.asm" lets you modify for both regular levels and mode 7
+	 rooms.
 
 
 (ASM HACKERS) WHAT SHOULD I BE AWARE OF TO TAKE ADVANTAGE OF THIS PATCH'S FEATURES?

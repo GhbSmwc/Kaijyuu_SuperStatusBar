@@ -31,6 +31,18 @@ SKIP_UNUSED:
 
 	RTS
 
+ORG $0090AE
+	db !Setting_SuperStatusBar_ItemBox_PixelXPos	; set item box item x position 
+ORG $0090B3
+	db !Setting_SuperStatusBar_ItemBox_PixelYPos	; set item box item y position
+ORG $028052 
+	db !Setting_SuperStatusBar_ItemBox_DropPos_PixelXPos
+ORG $028060
+	db !Setting_SuperStatusBar_ItemBox_DropPos_PixelYPos
+ORG $0090B8
+	DB !Setting_SuperStatusBar_ItemBox_Prop	; set item box item priority bits
+ORG $0090CC
+	DB !Setting_SuperStatusBar_ItemBox_OAMExtraBits		; set item box item size/high x bit
 
 freecode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
