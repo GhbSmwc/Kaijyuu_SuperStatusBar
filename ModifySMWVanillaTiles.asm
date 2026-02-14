@@ -1,4 +1,5 @@
 ;This patch modifes the vanilla tiles that were reused despite the super status bar patches being applied.
+;See DefaultTiles.png for reference.
 	org $008C81
 		;Top 4 tiles of the item box
 			db $3A,%00111000	;>(14,01)
