@@ -59,7 +59,9 @@
 		!Setting_SuperStatusBar_Time_YPos #= 3
 		!Setting_SuperStatusBar_Time_CountdownSpeed = $28	;>Number of frames between each the timer decrement, lower = faster. $28 by default, $3C would be real a second (1 frame = 1/60th of a second). NOTE: Setting this to 0 will decrement by 1 per frame.
 		!Setting_SuperStatusBar_Time_LowWarning = 1		;>0 = No, 1 = Yes (turns red below 100, beeps below 10).
-	;Score (numbers only)
+	;Score (numbers only). Note, this only covers the "active" digits, where the tiles can change. There is one inactive digit which is a fake "0" at the end and the score is actually stored in memory divided by 10
+	;(a "10" on the HUD means 1 in memory). That last 0 is a static tile not written every frame. If you move this, you'll need to modify the fake 0 as well (it shall be located at
+	;Score_XPos + 6, in this default case, 23+6 = 29).
 		!Setting_SuperStatusBar_Score_Enable = 1	;>Note: When disabled, will still display "0" (static tile) on last tile. Recommend installing a "Disable Score" patch if you set this to 0.
 		!Setting_SuperStatusBar_Score_XPos #= 23
 		!Setting_SuperStatusBar_Score_YPos #= 3
