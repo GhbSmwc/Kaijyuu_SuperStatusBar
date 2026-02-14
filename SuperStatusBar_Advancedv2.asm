@@ -718,14 +718,13 @@ CODE_009042:		SEP #$20		  ; 8 bit A ; Accum (8 bit)
 Return009044:      	RTS       
 	endif ;end of score 2
 ;--------------------------------------------------------------------------
-HexToDec:		   LDX #$00			;| 
-CODE_009047:		CMP #$0A			;| 
-CODE_009049:		BCC Return009050		;|Sets A to 10s of original A 
-CODE_00904B:		SBC #$0A			;|Sets X to 1s of original A 
-CODE_00904D:		INX		       		;| 
-CODE_00904E:		BRA CODE_009047	   		;|>loop
-
-Return009050:       	RTS
+HexToDec:		LDX #$00			;\ hexdec routine: Input: A (8-bit), output: A = 1s, X = 10s.
+CODE_009047:		CMP #$0A			;| Uses repeated subtractions by 10 until A is < 10.
+CODE_009049:		BCC Return009050		;|
+CODE_00904B:		SBC #$0A			;|
+CODE_00904D:		INX				;|
+CODE_00904E:		BRA CODE_009047			;/
+Return009050:       	RTS				;/
 ;-------------------------------------------
 	if !Setting_SuperStatusBar_BonusStars_Enable != 0 ;>stars subroutine
 CODE_009051:		SEP #$20		  	; Accum (8 bit) 

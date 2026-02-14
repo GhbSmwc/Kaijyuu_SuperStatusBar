@@ -59,10 +59,14 @@
 <body onload="Calculate()" style="max-width: 1000px; margin: auto; padding: 15px">
 	<div>
 		You can actually find the address of a given XY coordinate using a formula:<br>
-		<br><kbd>AddressOffset = (X * $02) + (Y * $40) + P</kbd><br><br>
+		<div class="CodeBlock" style="height: 18px; width: 528px;"><pre>Address = !Freeram_SuperStatusBar_TileData + (X * 2) + (Y * 64) + P</pre></div>
 	
 		Where:
 		<ul>
+			<li>
+				<kbd>!Freeram_SuperStatusBar_TileData</kbd> is a RAM address set to use
+				in <kbd>StatusBarDefines/StatusBarDefines.asm</kbd>.
+			</li>
 			<li><kbd>X</kbd> and <kbd>Y</kbd> values are integer coordinates, in units of 8x8 tiles (integers only):
 				<ul>
 					<li>X (valid in range <kbd>0~31</kbd> (<kbd>$00~$1F</kbd>) inclusive) starting at the left at <kbd>$00</kbd> increasing going rightwards.</li>

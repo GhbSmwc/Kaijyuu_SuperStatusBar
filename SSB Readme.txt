@@ -32,7 +32,8 @@ WHAT'S THE DIFFERENCE BETWEEN THE ADVANCED AND COMPATIBILITY VERSIONS?
 	asm file (the file used to patch other asm file codes into the ROM), and in the
 	label "!statusbar", change it to equal to "!false" so it doesn't conflict with it.
 	If you have codes in the status bar asm file, move them into a different asm file
-	(mainly in gamemode_code in "gamemode_14:" or global).
+	(mainly in gamemode_code in "gamemode_14:" or global). EDIT: there is a tool
+	version I highly recommend using instead, which does not conflict with this patch.
 
 WHICH SHOULD I USE FOR MY HACK?
 
@@ -148,13 +149,15 @@ I PUT A TILE ON THE BOTTOM ROW AND IT'S CUT OFF HALFWAY DOWN!
 	Read GHB's_notes.txt on how to make other codes work with this patch!!
 
 
-(ASM HACKERS) $140 BYTES?! THAT'S A LOT TO KEEP TRACK OF!
+(ASM HACKERS) 320 ($140) BYTES?! THAT'S A LOT TO KEEP TRACK OF!
 
-	I included a .xls spreadsheet that shows the hex and decimal offset for each tile and it's
-	properties. 320 (decimal) bytes is a lot more to keep track of than 55, I know :P
-	But believe me, having so few tiles to work with (and being unable to change properties) 
-	can be a huge pain if you want to do anything dynamic with the status bar.
+	With a 32x5 tile grid of the HUD, that's 160 tiles. With each tile taking 2 bytes, it's
+	160*2 = 320 total bytes of freeram needed. Therefore, the bytes usage range is
+	!Freeram_SuperStatusBar_TileData to !Freeram_SuperStatusBar_TileData+319.
 
+	To track the bytes, I've included an HTML file with javascript (open with a browser) that
+	shows what tile corresponds to what address for tile numbers and properties. It will also
+	display the starting and ending address representing the range of bytes being used.
 
 DO I HAVE TO CREDIT YOU?
 
