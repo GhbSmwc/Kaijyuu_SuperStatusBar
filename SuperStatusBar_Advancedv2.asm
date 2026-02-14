@@ -596,9 +596,9 @@ CODE_008F76:		JSR HexToDec	    			;/
 CODE_008F7E:		STA !Setting_SuperStatusBar_Coins_XYToAddress+2	       	;\ Write coins to status bar 
 			TXA
 			BNE CODE_008F81
-CODE_008F7C:		LDA #$FC				;| 
+CODE_008F7C:		LDA #$FC				;|>Remove leading zero
 CODE_008F81:		STA !Setting_SuperStatusBar_Coins_XYToAddress	       	;/
-		endif ;>end of coin routine 2
+	endif ;>end of coin routine 2
 CODE_008F84:		SEP #$20		  		; 8 bit A ; Accum (8 bit)
 	if !Setting_SuperStatusBar_BonusStars_Enable != 0 ;>begin bonus stars 2
 CODE_008F86:		LDX $0DB3|!addr       			; Load Character into X 
@@ -609,28 +609,37 @@ CODE_008F8F:		LDA $0F48|!addr,X
 CODE_008F92:		STA $02		   
 CODE_008F94:		LDX #$00		
 CODE_008F96:		LDY #$10		
-CODE_008F98:		JSR CODE_009051	 
+CODE_008F98:		JSR CODE_009051				;>Big hexdec routine.
 CODE_008F9B:		LDX #$00		
 CODE_008F9D:		LDA !Setting_SuperStatusBar_BonusStars_XYToAddress,X	     
+		if !Setting_SuperStatusBar_BonusStars_Enable == 1
 CODE_008FA0:		BNE CODE_008FAF	   
+		else
+			BNE CODE_008FAF_Skip
+		endif
 CODE_008FA2:		LDA #$FC	
 CODE_008FA4:		STA !Setting_SuperStatusBar_BonusStars_XYToAddress,X	     
+			if !Setting_SuperStatusBar_BonusStars_Enable == 1
 CODE_008FA7:		STA !Setting_SuperStatusBar_BonusStars_XYToAddress-$40,X
+			endif
 CODE_008FAA:		INX		    
 			INX   
 CODE_008FAB:		CPX #$02		
 CODE_008FAD:		BNE CODE_008F9D	   
+			if !Setting_SuperStatusBar_BonusStars_Enable == 1
 CODE_008FAF:		LDA !Setting_SuperStatusBar_BonusStars_XYToAddress,X	     
-CODE_008FB2:		ASL		       
-CODE_008FB3:		TAY		       
-CODE_008FB4:		LDA DATA_008E06,Y
-CODE_008FB7:		STA !Setting_SuperStatusBar_BonusStars_XYToAddress-$40,X
-CODE_008FBA:		LDA DATA_008E07,Y       
-CODE_008FBD:		STA !Setting_SuperStatusBar_BonusStars_XYToAddress,X
+CODE_008FB2:		ASL
+CODE_008FB3:		TAY
+CODE_008FB4:		LDA DATA_008E06,Y						;\Convert 0~9 8x8 graphic digit to top half of 8x16 graphic digit
+CODE_008FB7:		STA !Setting_SuperStatusBar_BonusStars_XYToAddress-$40,X	;/
+CODE_008FBA:		LDA DATA_008E07,Y						;\Convert 0~9 8x8 graphic digit to bottom half of 8x16 graphic digit
+CODE_008FBD:		STA !Setting_SuperStatusBar_BonusStars_XYToAddress,X		;/
 CODE_008FC0:		INX	 
 			INX	      
 CODE_008FC1:		CPX #$04		
 CODE_008FC3:		BNE CODE_008FAF ;>loop
+			endif
+CODE_008FAF_Skip:
 	endif ;>end bonus stars 2
 			LDA #$00
 			PHA

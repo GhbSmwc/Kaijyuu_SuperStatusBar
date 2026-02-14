@@ -82,9 +82,13 @@
 		!Setting_SuperStatusBar_DragonCoin_Empty = $FC	;>Tile number when yoshi coin is not collected
 		!Setting_SuperStatusBar_DragonCoin_Full = $2E	;>Tile number when yoshi coin is collected
 	;Bonus stars
-		!Setting_SuperStatusBar_BonusStars_Enable = 1	;>Note that vanilla goal WILL STILL USE bonus stars, despite this disabled. Recommended using custom goal (or goal screen) instead.
-		!Setting_SuperStatusBar_BonusStars_XPos #= 12    ;\XY position, OF THE BOTTOM-LEFT CORNER of the 2x2 8x8 tiles.
-		!Setting_SuperStatusBar_BonusStars_YPos #= 03    ;/
+		!Setting_SuperStatusBar_BonusStars_Enable = 1
+			;^Note that vanilla goal WILL STILL USE bonus stars, despite this disabled. Recommended using custom goal (or goal screen) instead.
+			; - 0 = Disable
+			; - 1 = Enable (8x16 digits)
+			; - 2 = Enable (8x8 digits)
+		!Setting_SuperStatusBar_BonusStars_XPos #= 12    ;\XY position, OF THE BOTTOM-LEFT CORNER of the 2x2 8x8 pixel tiles. If set to be 8x8 pixels rather than 8x16 pixels digits, then it's the 10s place digit.
+		!Setting_SuperStatusBar_BonusStars_YPos #= 03    ;/Note that if set to use 8x16 and is placed at Y=0, would write the top-half of the digits at invalid address, thus a failsafe is added.
 	;Item box
 		!Setting_SuperStatusBar_ItemBox_PixelXPos         = $78 ;\XY position (in pixels) the item box is DISPLAYED, but not
 		!Setting_SuperStatusBar_ItemBox_PixelYPos         = $0F ;/where it drops from. Relative to screen.
@@ -108,7 +112,7 @@
 			function SuperStatusBarXYToAddr(x, y) = !Freeram_SuperStatusBar_TileData+(x*2)+(y*32*2)
 			
 			macro CheckSuperStatusBarXYPositionValid(x, y)
-				assert and(and(greaterequal(<x>, 0), lessequal(<x>, 31)), and(greaterequal(<y>, 0), lessequal(<y>, 4))), "Coordinate out of range. X valid 0~31, Y valid 0~4."
+				assert and(and(greaterequal(<x>, 0), lessequal(<x>, 31)), and(greaterequal(<y>, 0), lessequal(<y>, 4))), "Coordinate out of range."
 			endmacro
 		endif
 	;This checks if values entered are wrong
@@ -120,6 +124,7 @@
 		%CheckSuperStatusBarXYPositionValid(!Setting_SuperStatusBar_DragonCoin_XPos, !Setting_SuperStatusBar_DragonCoin_YPos)
 		%CheckSuperStatusBarXYPositionValid(!Setting_SuperStatusBar_BonusStars_XPos, !Setting_SuperStatusBar_BonusStars_YPos)
 		assert and(greaterequal(!Setting_SuperStatusBar_DMAChannel, 0), lessequal(!Setting_SuperStatusBar_DMAChannel, 7)), "Invalid DMA channel to use."
+		assert not(and(equal(!Setting_SuperStatusBar_BonusStars_Enable, 1), equal(!Setting_SuperStatusBar_BonusStars_YPos, 0))), "8x16 graphic digit bonus stars cannot be placed at Y=0."
 	;Calculate some stuff for defines
 		!Setting_SuperStatusBar_Time_XYToAddress #= SuperStatusBarXYToAddr(!Setting_SuperStatusBar_Time_XPos, !Setting_SuperStatusBar_Time_YPos)
 		!Setting_SuperStatusBar_Score_XYToAddress #= SuperStatusBarXYToAddr(!Setting_SuperStatusBar_Score_XPos, !Setting_SuperStatusBar_Score_YPos)

@@ -280,3 +280,4 @@ version history: (M/D/Y, from oldest to newest)
 	-Replaced "Statbar" with "DefaultTiles.png" with better explanation.
 	-Renamed "!RAM_BAR" to "!Freeram_SuperStatusBar_TileData" to reduce potential future define conflict if combined
 	 with other ASM resources.
+	-Added an option to have 8x8 graphic digits for bonus stars.
