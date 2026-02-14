@@ -281,3 +281,5 @@ version history: (M/D/Y, from oldest to newest)
 	-Renamed "!RAM_BAR" to "!Freeram_SuperStatusBar_TileData" to reduce potential future define conflict if combined
 	 with other ASM resources.
 	-Added an option to have 8x8 graphic digits for bonus stars.
+	-Included a patch version of "ModifySMWVanillaTiles.asm" which does the same as Smallhacker's statusbar editor,
+	 but that tool is extremely old.

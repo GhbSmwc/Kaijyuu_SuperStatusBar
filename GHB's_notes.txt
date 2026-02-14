@@ -119,6 +119,10 @@ Contents:
 	things, you have to disable or edit them *ON THIS PATCH*. A good example is the Metroid and SMB2 (titled
 	"SMW Health Bar - Bugfix and Alternative") health patch. Mine however, have codes already based on uberasm
 	tool and does not hijacks any of SMW's status bar code (most of them are already used the hybrid define).
+	
+	If you wanted an actual, functional display, see these ASM resources:
+	 - Graphical bar: https://www.smwcentral.net/?p=section&a=details&id=39662
+	 - General display: https://www.smwcentral.net/?p=section&a=details&id=40106
 -------------------------------------------------------------------------------------------------------------------
 2: Patches that does hex-edits tiles that are not controlled by a routine.
 

@@ -8,7 +8,7 @@
 	else
 		!Freeram_SuperStatusBar_TileData	#= $404000
 	endif
-		;^Free ram for status bar (needs $140 (320 decimal) bytes). These are the tile data, of all 160 tiles in a 32x5 grid, in the format of
+		;^Freeram for status bar (needs $140 (320 decimal) bytes). These are the tile data, of all 160 tiles in a 32x5 grid, in the format of
 		; !Freeram_SuperStatusBar_TileData+0: TTTTTTTT of Tile 0 (X=00, Y=00)
 		; !Freeram_SuperStatusBar_TileData+1: YXPCCCTT of Tile 0 (X=00, Y=00)
 		; !Freeram_SuperStatusBar_TileData+2: TTTTTTTT of Tile 1 (X=01, Y=00)
@@ -22,6 +22,7 @@
 	
 ;Super status bar settings:
 ;Notes:
+; - Tile positions and enabling/disabling only works on the advanced version of the SSB patch.
 ; - XY positions ranges X:00~31 and Y:00~04, represents a position, in units of 8x8 tiles, and must be integers. They increases going
 ;   rightwards and downwards.
 ; -- Any XY position of a counter placed outside that range, or is a counter that spans multiple tiles placed so its second or later
@@ -34,7 +35,6 @@
 ;   Note that some counters do have its code with gameplay impact (beyond just informing the player) in the status bar code, which
 ;   is also subject to being disabled as well (disabling the timer, for example, would also remove the actual time limit rather
 ;   than just making the timer invisible).
-; - Tile positions and enabling/disabling only works on the advanced version of the SSB patch.
 ; - Default tile numbers and properties are in "DATA_TILES", or using Smallhacker's status bar editor. Note that this added table
 ;   to the game is for new row of tiles. Original tiles not provided by this patch are from a reused vanilla table at $008C81~$008CFE:
 ;   https://smwc.me/m/smw/rom/008C81
@@ -61,8 +61,8 @@
 		!Setting_SuperStatusBar_Time_LowWarning = 1		;>0 = No, 1 = Yes (turns red below 100, beeps below 10).
 	;Score (numbers only). Note, this only covers the "active" digits, where the tiles can change. There is one inactive digit which is a fake "0" at the end and the score is actually stored in memory divided by 10
 	;(a "10" on the HUD means 1 in memory). That last 0 is a static tile not written every frame. If you move this, you'll need to modify the fake 0 as well (it shall be located at
-	;Score_XPos + 6, in this default case, 23+6 = 29).
-		!Setting_SuperStatusBar_Score_Enable = 1	;>Note: When disabled, will still display "0" (static tile) on last tile. Recommend installing a "Disable Score" patch if you set this to 0.
+	;Score_XPos + 6, in this default case, 23+6 = 29), by setting its default tile to "$FC, %00111000" (assuming you didn't change the colors).
+		!Setting_SuperStatusBar_Score_Enable = 1
 		!Setting_SuperStatusBar_Score_XPos #= 23
 		!Setting_SuperStatusBar_Score_YPos #= 3
 	;Lives
