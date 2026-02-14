@@ -19,15 +19,15 @@ Contents:
 	the tile properties themselves in-game.
 
 	The super status bar patch's data is formated like this:
-		!RAM_BAR+0 ($7FA000/$404000 default)	;>Topmost and leftmost tile number
-		!RAM_BAR+1 ($7FA001/$404001 default)	;>Same as above, but properties (YXPCCCTT)
-		!RAM_BAR+2 ($7FA002/$404002 default)	;>Topmost, second leftmost tile
-		!RAM_BAR+3 ($7FA003/$404003 default)	;>Same as above, but tile properties
-		!RAM_BAR+4 ($7FA004/$404004 default)	;>Topmost, third leftmost tile
-		!RAM_BAR+5 ($7FA005/$404005 default)	;>Same as above, but tile properties
+		!Freeram_SuperStatusBar_TileData+0 ($7FA000/$404000 default)	;>Topmost and leftmost tile number
+		!Freeram_SuperStatusBar_TileData+1 ($7FA001/$404001 default)	;>Same as above, but properties (YXPCCCTT)
+		!Freeram_SuperStatusBar_TileData+2 ($7FA002/$404002 default)	;>Topmost, second leftmost tile
+		!Freeram_SuperStatusBar_TileData+3 ($7FA003/$404003 default)	;>Same as above, but tile properties
+		!Freeram_SuperStatusBar_TileData+4 ($7FA004/$404004 default)	;>Topmost, third leftmost tile
+		!Freeram_SuperStatusBar_TileData+5 ($7FA005/$404005 default)	;>Same as above, but tile properties
 		...					;>Will keep going rightwards and the next row downwards.
 
-	check out [ASSB_map.png] and [RAM_BAR_MemoryLocater.html] for more information.
+	check out [ASSB_map.png] and [TileDataList.html] for more information.
 	
 	-Please be aware that most ASM resources (patches and sprites, for example) still
 	 uses SMW's vanilla status bar ($7E0EF9-$7E0F2F), you need to make it use ASSB's
@@ -115,8 +115,8 @@ Contents:
 	Another note is be aware on ORG-based patches that add hijacks smw's status bar code at a code at address
 	$008E1A to $008FF9 for the purpose of adding new displays, just move their code to uberasm tool (call it
 	in gamemode 14) and make them not hijack code potentially hijacked by this patch, since this is merely a
-	heads-up-*DISPLAY*. For codes that move the counter around or disabling certain things, you have to disable
-	or edit them *ON THIS PATCH*. A good example is the Metroid and SMB2 (titled
+	heads-up-*DISPLAY* that runs every frame. For codes that move the counter around or disabling certain
+	things, you have to disable or edit them *ON THIS PATCH*. A good example is the Metroid and SMB2 (titled
 	"SMW Health Bar - Bugfix and Alternative") health patch. Mine however, have codes already based on uberasm
 	tool and does not hijacks any of SMW's status bar code (most of them are already used the hybrid define).
 -------------------------------------------------------------------------------------------------------------------

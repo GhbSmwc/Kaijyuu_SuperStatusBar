@@ -1,5 +1,7 @@
-;This patch modifes the vanilla tiles that were reused despite the super status bar patches being applied.
-;See DefaultTiles.png for reference.
+;This patch modifes the vanilla tiles that were reused despite the super status bar patches "Advanced" and
+;"Compatability" being applied. See DefaultTiles.png for reference.
+;
+;Tables here are the same format as the aformentioned patches.
 	org $008C81
 		;Top 4 tiles of the item box
 			db $3A,%00111000	;>(14,01)

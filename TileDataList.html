@@ -1,0 +1,224 @@
+<html>
+	<head>
+		<style>
+			html {
+			background-color: #101010;
+			color: rgb(221, 221, 221);
+			font-family: sans-serif;
+			}
+			
+			table, th, td {
+			border: 1px solid white;
+			border-collapse: collapse;
+			}
+			
+			abbr{cursor: help;}
+			img.img-hor {
+				-moz-transform: scaleX(-1);
+				-o-transform: scaleX(-1);
+				-webkit-transform: scaleX(-1);
+				transform: scaleX(-1);
+				filter: FlipH;
+				-ms-filter: "FlipH";
+			}
+			div.CodeBlock {
+				overflow: auto;
+				width: 1000px;
+				height: 500px;
+				border: 1px solid white;
+				resize: both;
+				background-color: #101010;
+			}
+			pre {
+				margin: 0px;
+			}
+			*.FixedWidth {
+				font-family: monospace;
+			}
+			
+			*.NoLineBreak {
+				font-family: monospace;
+				white-space: pre;
+			}
+			*.Center {
+				text-align: center;
+			}
+			li {
+				padding: 5px;
+			}
+			input {
+				font-family: monospace;
+			}
+			summary {
+				border: 1px solid white;
+				background-color: #707070;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+<body onload="Calculate()" style="max-width: 1000px; margin: auto; padding: 15px">
+	<div>
+		You can actually find the address of a given XY coordinate using a formula:<br>
+		<br><kbd>AddressOffset = (X * $02) + (Y * $40) + P</kbd><br><br>
+	
+		Where:
+		<ul>
+			<li><kbd>X</kbd> and <kbd>Y</kbd> values are integer coordinates, in units of 8x8 tiles (integers only):
+				<ul>
+					<li>X (valid in range <kbd>0~31</kbd> (<kbd>$00~$1F</kbd>) inclusive) starting at the left at <kbd>$00</kbd> increasing going rightwards.</li>
+					<li>Y (valid in range <kbd>0~4</kbd> (<kbd>$00~$04</kbd>) inclusive) starting at the top at <kbd>$00</kbd> increasing going downwards.</li>
+				</ul>
+			</li>
+			<li><kbd>P</kbd> is the properties:
+				<ul>
+					<li><kbd>P = 0</kbd> if you wanted the <kbd>TTTTTTTT</kbd> tile number.</li>
+					<li><kbd>P = 1</kbd> if you wanted the <kbd>YXPCCCTT</kbd> tile properties. For easy understanding (espically for debugging), <a href="TileDataList_Files/JS_YXPCCCTT.html" id="JS_YXPCCCTT">here's a link to the tool</a>.</li>
+				</ul>
+			</li>
+		</ul>
+		and that
+		the default RAM address to use have zeroes in the lower bytes ($7fA<b>000</b>, which makes adding as replacing the zeros with the offset), this is here to make it even easier in the case
+		of:
+		<ul>
+			<li>You have moved the RAM address to another location in which the starting address is no longer a row of zeroes in the last nth digits.</li>
+			<li>You don't want to use the calculator all the time and re-calculating every time you want to use the status bar.</li>
+		</ul>
+	
+		Notes:
+		<ul>
+			<li>Numbers prefixed with a dollar sign <kbd>$</kbd> means the number is a hexadecimal value, a number without any prefix is a decimal number.</li>
+			<li><b>Tile x ($x)</b> refers to what tile in the order from left to right and top to bottom (the same way text are being read and written in most countries). As there are a total of 160 tiles (numbered from 0 to 159).</li>
+			<li>
+				The &ldquo;<b>Coordinate</b>&rdquo; refers to the position (<kbd>(XPosition, YPosition)</kbd>, in units of 8x8 tiles) of the tile on-screen, relative to the top-left corner. X moves right as it increases, and Y moves
+				downwards as it increases.
+			</li>
+		</ul>
+		<details>
+			<summary>Details on getting coordinates via debugger</summary>
+			Protip: To find exactly the tile you want to modify in your game without re-calculating the tiles, use a debugger that can display tilemap. For example using <a href="https://github.com/SourMesen/Mesen2/">Mesen 2.0 or higher</a>:
+			<ol>
+				<li>Run the game and play any level you are making custom tiles</li>
+				<li>Go to the menu bar, &rarr; Debug &rarr; Tilemap Viewer, and switch to the layer 3 tab.</li>
+				<li>
+					You should see this upon hovering a desired tile:<br>
+					<span id="StatusBarTileGrid"><img src="TileDataList_Files/StatusBarGridMap.png"></span><br>
+					Currently, these numbers are in decimal, in the case the newer version is a different radix number (say, hex), pay attention to the prefix (<kbd>$</kbd> or <kbd>0x</kbd>, for example).
+				</li>
+				<li>
+					Enter the RAM address used in the patch labeled <kbd>!Freeram_SuperStatusBar_TileData</kbd> in the box on the very bottom of this HTML (this will automatically generate the memory statistics including
+					the regions and tile locations table following the input you entered).
+				</li>
+				<li>
+					CTRL+F and type the coordinates you got from the debugger (note that leading zeroes are present, for example, searching <kbd>(5, 1)</kbd>, you should type
+					&ldquo;<kbd>(05 ,01)</kbd></kbd>&rdquo;, and if they are in hex in the debugger (possibly in the future version), use &ldquo;<kbd>$</kbd>&rdquo; instead of <kbd>0x</kbd>.)
+				</li>
+				<li>
+					After finding the coordinate in the generated table, you now have the address(es) of that particular tile (in this example, it is address <kbd>$7FA04A</kbd> and <kbd>$7FA04B</kbd> provided you
+					didn't change the default RAM address and are not using SA-1).
+				</li>
+			</ol>
+		</details><br>
+	</div>
+<kbd>!Freeram_SuperStatusBar_TileData = $<input type="text" list="StatusBarRAMTileList" id="FreeramRamBar" value ="7FA000" onchange="Calculate()" style="font-family: monospace;" data-padlength="6" onkeydown="IncrementDecrementHex()" data-min="0" data-max="16777215" onchange="Calculate()"></kbd>
+<datalist id="StatusBarRAMTileList">
+<option value="7FA000">Default RAM address</option>
+<option value="404000">Default SA-1 RAM address</option>
+</datalist>
+<hr>
+<span style="font-family: monospace;" id="Statistic_RAM_Bar_Range"></span><br><br>
+<div id="RAMTable" class="CodeBlock"></div>
+
+<script>
+	function IncrementDecrementHex() {
+		let ElementUsed = event.target
+		let KeyPressed = event.key
+		let MinValue = BigInt(ElementUsed.dataset.min)
+		let MaxValue = BigInt(ElementUsed.dataset.max)
+		let Value = 0n
+		try {
+			Value = BigInt("0x" + ElementUsed.value)
+		} catch {}
+		if (event.altKey) {
+			return
+		}
+		if (!/(?:ArrowUp|ArrowDown)/.test(KeyPressed)) {
+			return
+		}
+		event.preventDefault()
+		if (KeyPressed == "ArrowUp") {
+			Value++
+		} else {
+			Value--
+		}
+		Value = BigintClamp(Value, MinValue, MaxValue)
+		ElementUsed.value = Value.toString(16).padStart(parseInt(ElementUsed.dataset.padlength), "0").toUpperCase()
+		ElementUsed.onchange()
+	}
+	function BigintClamp(num, min, max) {
+		//Restrict a number within a specified range, bigInt edition.
+		return num <= min ? min : num >= max ? max : num;
+	}
+	function Calculate() {
+		const NumberOfCols = 32n
+		const NumberOfRows = 5n
+		const Element_RAM_Bar = document.getElementById("FreeramRamBar")
+		const TotalTiles = NumberOfCols*NumberOfRows
+		let RAM_BAR = 0n
+		try {
+			RAM_BAR = BigInt("0x" + Element_RAM_Bar.value)
+		} catch {}
+		Element_RAM_Bar.value = RAM_BAR.toString(16).padStart(6, "0").toUpperCase()
+		
+		let OutputTable = document.getElementById("RAMTable")
+		while (OutputTable.lastElementChild) { //Clear the table
+			OutputTable.removeChild(OutputTable.lastElementChild)
+		}
+		
+		document.getElementById("Statistic_RAM_Bar_Range").textContent = "!Freeram_SuperStatusBar_TileData usage: $" + Element_RAM_Bar.value + "~$" + (RAM_BAR+(TotalTiles*2n)-1n).toString(16).padStart(6, "0").toUpperCase() + " (" + (TotalTiles*2n).toString(10) + " bytes)"
+		
+		let Element_OutputTable = document.createElement("table")
+		let Element_OutputTable_HeaderRow = document.createElement("tr")
+		
+		let Element_OutputTable_Header_TileIndex = document.createElement("th")
+		Element_OutputTable_Header_TileIndex.appendChild(document.createTextNode("Tile index"))
+		Element_OutputTable_HeaderRow.appendChild(Element_OutputTable_Header_TileIndex)
+		
+		let Element_OutputTable_Header_TileCoordinate = document.createElement("th")
+		Element_OutputTable_Header_TileCoordinate.appendChild(document.createTextNode("Coordinate"))
+		Element_OutputTable_HeaderRow.appendChild(Element_OutputTable_Header_TileCoordinate)
+		
+		let Element_OutputTable_Header_Address = document.createElement("th")
+		Element_OutputTable_Header_Address.appendChild(document.createTextNode("Address (Tile number, properties)"))
+		Element_OutputTable_HeaderRow.appendChild(Element_OutputTable_Header_Address)
+		
+		Element_OutputTable.appendChild(Element_OutputTable_HeaderRow)
+		for (let TileIndex = 0n; TileIndex < TotalTiles; TileIndex++) {
+			let RowIndex = TileIndex % NumberOfCols
+			let ColIndex = TileIndex / NumberOfCols
+			let TileNumberAddressOffset = TileIndex*2n
+			let TilePropertiesAddressOffset = TileNumberAddressOffset+1n
+			let TileNumberAddress = RAM_BAR + TileNumberAddressOffset
+			let TilePropertiesAddress = TileNumberAddress+1n
+			
+			let Element_TableRow = document.createElement("tr")
+			
+			let Element_TableData_TileIndex = document.createElement("td")
+			Element_TableData_TileIndex.style.fontFamily = "monospace"
+			Element_TableData_TileIndex.appendChild(document.createTextNode(TileIndex.toString(10) + " ($" + TileIndex.toString(16).toUpperCase() + ")"))
+			Element_TableRow.appendChild(Element_TableData_TileIndex)
+			
+			let Element_TableData_Coordinate = document.createElement("td")
+			Element_TableData_Coordinate.style.fontFamily = "monospace"
+			Element_TableData_Coordinate.appendChild(document.createTextNode("(" + RowIndex.toString(10).padStart(2, "0") + ", " + ColIndex.toString(10).padStart(2, "0") + "), " + "($" + RowIndex.toString(16).padStart(2, "0").toUpperCase() + ", $" + ColIndex.toString(16).padStart(2, "0").toUpperCase() + ")"))
+			Element_TableRow.appendChild(Element_TableData_Coordinate)
+			Element_OutputTable.appendChild(Element_TableRow)
+			
+			let Element_TableData_Address = document.createElement("td")
+			Element_TableData_Address.style.fontFamily = "monospace"
+			Element_TableData_Address.appendChild(document.createTextNode("$" + TileNumberAddress.toString(16).padStart(6, "0").toUpperCase() + ", $" + TilePropertiesAddress.toString(16).padStart(6, "0").toUpperCase() + " (+$" + TileNumberAddressOffset.toString(16).padStart(3, "0").toUpperCase() + "/+$" + TilePropertiesAddressOffset.toString(16).padStart(3, "0").toUpperCase() + ")"))
+			Element_TableRow.appendChild(Element_TableData_Address)
+			Element_OutputTable.appendChild(Element_TableRow)
+		}
+		OutputTable.appendChild(Element_OutputTable)
+	}
+</script>

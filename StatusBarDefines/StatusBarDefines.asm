@@ -4,18 +4,18 @@
 
 ;Statusbar tile RAM location
 	if !sa1 == 0
-		!RAM_BAR	#= $7FA000
+		!Freeram_SuperStatusBar_TileData	#= $7FA000
 	else
-		!RAM_BAR	#= $404000
+		!Freeram_SuperStatusBar_TileData	#= $404000
 	endif
 		;^Free ram for status bar (needs $140 (320 decimal) bytes). These are the tile data, of all 160 tiles in a 32x5 grid, in the format of
-		; !RAM_BAR+0: TTTTTTTT of Tile 0 (X=00, Y=00)
-		; !RAM_BAR+1: YXPCCCTT of Tile 0 (X=00, Y=00)
-		; !RAM_BAR+2: TTTTTTTT of Tile 1 (X=01, Y=00)
-		; !RAM_BAR+3: YXPCCCTT of Tile 1 (X=01, Y=00)
+		; !Freeram_SuperStatusBar_TileData+0: TTTTTTTT of Tile 0 (X=00, Y=00)
+		; !Freeram_SuperStatusBar_TileData+1: YXPCCCTT of Tile 0 (X=00, Y=00)
+		; !Freeram_SuperStatusBar_TileData+2: TTTTTTTT of Tile 1 (X=01, Y=00)
+		; !Freeram_SuperStatusBar_TileData+3: YXPCCCTT of Tile 1 (X=01, Y=00)
 		; ...
-		; !RAM_BAR+318: TTTTTTTT of Tile 159 (X=31, Y=05)
-		; !RAM_BAR+319: YXPCCCTT of Tile 159 (X=31, Y=05)
+		; !Freeram_SuperStatusBar_TileData+318: TTTTTTTT of Tile 159 (X=31, Y=05)
+		; !Freeram_SuperStatusBar_TileData+319: YXPCCCTT of Tile 159 (X=31, Y=05)
 		;
 		; Note that "#=" is used as a failsafe to prevent potential error where asar treats the numbers as strings.
 	
@@ -101,11 +101,11 @@
 			; if the incsrc'ed file is the same file: https://github.com/RPGHacker/asar/issues/287
 			
 			;^Yes, this if statement seems rendundant. But it some rare chance a future ASM resource need this define
-			; file rather than its own define file that have a define pointing to what this define file defines !RAM_BAR.
+			; file rather than its own define file that have a define pointing to what this define file defines !Freeram_SuperStatusBar_TileData.
 			; This incsrc problem happens when having a tool ASM file's resource and the main ASM file both incsrc to a
 			; define file with a macro/define.
 			
-			function SuperStatusBarXYToAddr(x, y) = !RAM_BAR+(x*2)+(y*32*2)
+			function SuperStatusBarXYToAddr(x, y) = !Freeram_SuperStatusBar_TileData+(x*2)+(y*32*2)
 			
 			macro CheckSuperStatusBarXYPositionValid(x, y)
 				assert and(and(greaterequal(<x>, 0), lessequal(<x>, 31)), and(greaterequal(<y>, 0), lessequal(<y>, 4))), "Coordinate out of range. X valid 0~31, Y valid 0~4."

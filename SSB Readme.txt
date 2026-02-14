@@ -275,3 +275,5 @@ version history: (M/D/Y, from oldest to newest)
 	-Added a hex edit patch for vanilla tiles to compensate the fact that the provided tables in the super status
 	 bar patches only defaults the tiles for newly added tiles, not the vanilla tiles.
 	-Replaced "Statbar" with "DefaultTiles.png" with better explanation.
+	-Renamed "!RAM_BAR" to "!Freeram_SuperStatusBar_TileData" to reduce potential future define conflict if combined
+	 with other ASM resources.

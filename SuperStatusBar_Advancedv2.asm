@@ -4,7 +4,7 @@ incsrc "StatusBarDefines/SA1Defines.asm"
 incsrc "StatusBarDefines/StatusBarDefines.asm"
 
 print ""
-print "Super Status bar RAM range (inclusive): $", hex(!RAM_BAR), " to $", hex(!RAM_BAR+319)
+print "Super Status bar RAM range (inclusive): $", hex(!Freeram_SuperStatusBar_TileData), " to $", hex(!Freeram_SuperStatusBar_TileData+319)
 print ""
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -57,16 +57,29 @@ freecode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Tables for default tiles. NOTE: This only applies to newly added tiles. To edit those, see "ModifySMWVanillaTiles.asm"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DATA_TILES:			;\This is the data for the tiles not regularly uploaded by SMW
+DATA_TILES:	;This is the data for the tiles not regularly uploaded by SMW
 	;This is the data for the tiles not regularly uploaded by SMW
-	;First number is the tile number, second is the properties
-	;YXPCCCTT
-	;Y = y flip, X = flip, P = priority, CCC = palette number (4 color palettes remember)
-	;TT = page number
-	;Ex: $38 = 00111000
-	;priority bit set, palette 7 (of 8)
-	;FC is a blank tile with SMW's original l3 graphics
+	;First number is the tile number %**, representing what tile to use within a graphics page,
+	;second is the properties %YXPCCCTT:
+	; - TT = (ranges 0~3) Page number (normally you have this set to 0 or 1)
+	; - CCC = (ranges 0~7) Palette (color) to use (2 for player name, 6 for most white-colored stuff, 7 for coin and time).
+	;   Note that because it is 2BPP graphics, pixels can only have 4 options: 1 for transperency, and 3 others for colors.
+	; - P = (0~1) Priority (you most likely have this set to 1 if you don't want the HUD element to go behind stuff)
+	; - X = (0~1) X-flip
+	; - Y = (0~1) Y-flip
 	;
+	; Example (uses ASCII art, make sure fixed-width font is used):
+	; - db $FC,%00111000
+	; -- $FC = blank tile.
+	; -- %00111000 = $38 in hex (in case if viewed from debugger that only displays hex values in the memory editor).
+	;    The values are:
+	;    %00111000
+	;           ^^ = (value 0) Page 0
+	;        ^^^   = (value 6) Palette 6
+	;       ^      = (value 1) Priority on (shall go in front of everything)
+	;      ^       = (value 0) No X-flip
+	;     ^        = (value 0) No Y-flip
+	
 	;This whole block is the top row of status bar tile space.
 	db $FC,%00111000		;>(00, 00)
 	db $FC,%00111000		;>(01, 00)
@@ -196,7 +209,7 @@ DATA_TILES9:
 	db $FC,%00111000		;>(30, 04)
 	db $FC,%00111000		;>(31, 04)
 
-DMA_BAR:		db	$01,$18,!RAM_BAR,!RAM_BAR>>8,!RAM_BAR>>16,$40,$01
+DMA_BAR:		db	$01,$18,!Freeram_SuperStatusBar_TileData,!Freeram_SuperStatusBar_TileData>>8,!Freeram_SuperStatusBar_TileData>>16,$40,$01
 ;^ ">>X", where x is how many times the number is divided by 2, so that it converts
 ;the freeram into DMA table bytes.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -222,7 +235,7 @@ MAIN_2:				; Uploads tiles to ram and DMAs new tiles
 	LDX #$0063		; Upload status bar tiles to ram
 UPLOAD_STATBAR1:		; 
 	LDA $8C81,y		; Top of item box
-	STA !RAM_BAR,X		; 
+	STA !Freeram_SuperStatusBar_TileData,X		; 
 	DEX
 	DEY
 	BPL UPLOAD_STATBAR1
@@ -230,7 +243,7 @@ UPLOAD_STATBAR1:		;
 	LDX #$00BB
 UPLOAD_STATBAR2:
 	LDA $8C89,Y
-	STA !RAM_BAR,X
+	STA !Freeram_SuperStatusBar_TileData,X
 	DEX
 	DEY
 	BPL UPLOAD_STATBAR2
@@ -238,7 +251,7 @@ UPLOAD_STATBAR2:
 	LDX #$00FB
 UPLOAD_STATBAR3:
 	LDA $8CC1,Y
-	STA !RAM_BAR,X
+	STA !Freeram_SuperStatusBar_TileData,X
 	DEX
 	DEY
 	BPL UPLOAD_STATBAR3
@@ -246,7 +259,7 @@ UPLOAD_STATBAR3:
 	LDX #$0123
 UPLOAD_STATBAR4:
 	LDA $8CF7,Y
-	STA !RAM_BAR,X
+	STA !Freeram_SuperStatusBar_TileData,X
 	DEX
 	DEY
 	BPL UPLOAD_STATBAR4
@@ -257,7 +270,7 @@ UPLOAD_STATBAR4:
 	LDX #$005B
 UPLOAD_STATBAR5:
 	LDA DATA_TILES,Y
-	STA !RAM_BAR,x
+	STA !Freeram_SuperStatusBar_TileData,x
 	DEX
 	DEY
 	BPL UPLOAD_STATBAR5
@@ -266,7 +279,7 @@ UPLOAD_STATBAR5:
 	LDX #$0083
 UPLOAD_STATBAR6:
 	LDA DATA_TILES3,Y
-	STA !RAM_BAR,x
+	STA !Freeram_SuperStatusBar_TileData,x
 	DEX
 	DEY
 	BPL UPLOAD_STATBAR6
@@ -275,7 +288,7 @@ UPLOAD_STATBAR6:
 	LDX #$00C5
 UPLOAD_STATBAR7:
 	LDA DATA_TILES5,Y
-	STA !RAM_BAR,x
+	STA !Freeram_SuperStatusBar_TileData,x
 	DEX
 	DEY
 	BPL UPLOAD_STATBAR7
@@ -284,7 +297,7 @@ UPLOAD_STATBAR7:
 	LDX #$011B
 UPLOAD_STATBAR8:
 	LDA DATA_TILES7,Y
-	STA !RAM_BAR,x
+	STA !Freeram_SuperStatusBar_TileData,x
 	DEX
 	DEY
 	BPL UPLOAD_STATBAR8
@@ -293,7 +306,7 @@ UPLOAD_STATBAR8:
 	LDX #$013F
 UPLOAD_STATBAR9:
 	LDA DATA_TILES9,Y
-	STA !RAM_BAR,x
+	STA !Freeram_SuperStatusBar_TileData,x
 	DEX
 	DEY
 	BPL UPLOAD_STATBAR9
@@ -360,9 +373,9 @@ store_prop:
 	STA !Setting_SuperStatusBar_Time_XYToAddress+1	;\digits
 	STA !Setting_SuperStatusBar_Time_XYToAddress+3	;|
 	STA !Setting_SuperStatusBar_Time_XYToAddress+5	;/
-	STA !RAM_BAR+$A7		;\the word "TIME".
-	STA !RAM_BAR+$A9		;|
-	STA !RAM_BAR+$AB		;/
+	STA !Freeram_SuperStatusBar_TileData+$A7		;\the word "TIME".
+	STA !Freeram_SuperStatusBar_TileData+$A9		;|
+	STA !Freeram_SuperStatusBar_TileData+$AB		;/
 	endif
 	;-------------------------------------------------------------------
 	; If you would like to add any subroutines that are run every frame the status bar is, 
