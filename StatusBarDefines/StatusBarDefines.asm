@@ -87,8 +87,8 @@
 		!Setting_SuperStatusBar_BonusStars_YPos #= 03    ;/
 	;Item box
 		!Setting_SuperStatusBar_ItemBox_PixelXPos         = $78 ;\XY position (in pixels) the item box is DISPLAYED, but not
-		!Setting_SuperStatusBar_ItemBox_PixelYPos         = $0F ;/wher eit drops from. Relative to screen.
-		!Setting_SuperStatusBar_ItemBox_DropPos_PixelXPos = $78 ;\XY position of a dropped item, similar as above.
+		!Setting_SuperStatusBar_ItemBox_PixelYPos         = $0F ;/where it drops from. Relative to screen.
+		!Setting_SuperStatusBar_ItemBox_DropPos_PixelXPos = $78 ;\XY position of a dropped item.
 		!Setting_SuperStatusBar_ItemBox_DropPos_PixelYPos = $20 ;/
 		!Setting_SuperStatusBar_ItemBox_Prop = %00110000 ;>Sprite YXPPCCCT (not YXPCCCTT) handler (please see smw disassembly at $0090B7, it's ORA'ed at $00)
 		!Setting_SuperStatusBar_ItemBox_OAMExtraBits = %00000010 ;>Extra bits: %00000000 = 8x8, %00000010 = 16x16. Don't use any other values.
