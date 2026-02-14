@@ -270,16 +270,15 @@ version history: (M/D/Y, from oldest to newest)
 	-ASM files now display the memory range usage upon patching.
 2/12/2026 2.2.1 changes
 	-Modernized HTML file (uses dark theme, no longer uses innerHTML).
-	-Defines now uses a coordinate-based system instead of offsets for the user to enter.
+	-Defines now uses a tile coordinate-based system instead of offsets for the user to enter.
 	-Fixed an issue in SA-1 due to a fixed-DMA channel to use
 	 (thank you DrAnas - https://www.smwcentral.net/?p=profile&id=25222), breaking message boxes, mode 7 bosses
 	 due to a DMA channel conflict.
-	-Added tile coordinates in the comments for the default tiles provided by the patches.
-	-Added a hex edit patch for vanilla tiles to compensate the fact that the provided tables in the super status
-	 bar patches only defaults the tiles for newly added tiles, not the vanilla tiles.
+	-Added tile coordinates in the comments for the default tiles provided by the patches for ease of use.
+	-Added a hex edit patch ("ModifySMWVanillaTiles.asm") for vanilla tiles to compensate the fact that the
+	 provided tables in the super status bar patches only defaults the tiles for newly added tiles, not the
+	 vanilla tiles.
 	-Replaced "Statbar" with "DefaultTiles.png" with better explanation.
-	-Renamed "!RAM_BAR" to "!Freeram_SuperStatusBar_TileData" to reduce potential future define conflict if combined
-	 with other ASM resources.
+	-Renamed "!RAM_BAR" to "!Freeram_SuperStatusBar_TileData" to reduce potential future define conflict if
+	 combined with other ASM resources.
 	-Added an option to have 8x8 graphic digits for bonus stars.
-	-Included a patch version of "ModifySMWVanillaTiles.asm" which does the same as Smallhacker's statusbar editor,
-	 but that tool is extremely old.
