@@ -87,7 +87,21 @@
 			<li>You have moved the RAM address to another location in which the starting address is no longer a row of zeroes in the last nth digits.</li>
 			<li>You don't want to use the calculator all the time and re-calculating every time you want to use the status bar.</li>
 		</ul>
+		An even easier method is to use a function that asar supports ():
+<div class="CodeBlock" style="width: 694px; height: 187px;"><pre>
+	!Freeram_SuperStatusBar_TileData = $7FA000
+	function SuperStatusBarXYToAddr(x, y) = !Freeram_SuperStatusBar_TileData+(x*2)+(y*32*2)
+
+	!XPos #= 01
+	!YPos #= 05
 	
+	!AddrTile #= SuperStatusBarXYToAddr(!XPos, !YPos)
+	!AddrProp #= !AddrTile+1
+	;example (merely display on console window):
+		print "Position (", dec(!XPos, 2), ", ", dec(!YPos, 2), ") is:"
+		print " $", hex(!AddrTile), " for tile number."
+		print " $", hex(!AddrProp), " for tile properties."
+</pre></div>
 		Notes:
 		<ul>
 			<li>Numbers prefixed with a dollar sign <kbd>$</kbd> means the number is a hexadecimal value, a number without any prefix is a decimal number.</li>
@@ -225,4 +239,34 @@
 		}
 		OutputTable.appendChild(Element_OutputTable)
 	}
+//These makes all <pre>...</pre> have an effect that double-clicking will select all the text
+//in it, to make it easy to copy code and paste it in your ASM stuff.
+//
+//Credit:
+// https://keestalkstech.com/2014/04/click-to-select-all-on-the-pre-element/
+// https://www.sanwebe.com/2014/04/select-all-text-in-element-on-click
+document.addEventListener('dblclick', e => {
+  let pre = getClosest(e.target, "PRE");
+  if (pre && e.ctrlKey) {
+    let range = new Range();
+    range.selectNodeContents(pre);
+    document.getSelection().removeAllRanges();
+    document.getSelection().addRange(range);
+  }
+});
+
+function getClosest(el, tagName) {
+  tagName = tagName && tagName.toUpperCase();
+
+  if (!tagName || !el)
+    return null;
+
+  do
+    if (el.nodeName === tagName)
+      return el;
+  while (el = el.parentNode);
+
+  return null;
+}
+
 </script>

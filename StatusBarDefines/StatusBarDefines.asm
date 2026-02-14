@@ -106,7 +106,7 @@
 			
 			;^Yes, this if statement seems rendundant. But it some rare chance a future ASM resource need this define
 			; file rather than its own define file that have a define pointing to what this define file defines !Freeram_SuperStatusBar_TileData.
-			; This incsrc problem happens when having a tool ASM file's resource and the main ASM file both incsrc to a
+			; This incsrc problem happens when having a tool ASM file's routines resource and the main ASM file both incsrc to a
 			; define file with a macro/define.
 			
 			function SuperStatusBarXYToAddr(x, y) = !Freeram_SuperStatusBar_TileData+(x*2)+(y*32*2)
