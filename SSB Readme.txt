@@ -268,7 +268,7 @@ version history: (M/D/Y, from oldest to newest)
 	-Fixed the "()" in the GHB notes.
 	-Improved the relative address in the GHB notes.
 	-ASM files now display the memory range usage upon patching.
-2/12/2026 2.3 changes
+2/12/2026 2.2.1 changes
 	-Modernized HTML file (uses dark theme, no longer uses innerHTML).
 	-Defines now uses a coordinate-based system instead of offsets for the user to enter.
 	-Fixed an issue in SA-1 due to a fixed-DMA channel to use
