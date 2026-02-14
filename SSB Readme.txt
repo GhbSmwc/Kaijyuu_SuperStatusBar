@@ -274,3 +274,4 @@ version history: (M/D/Y, from oldest to newest)
 	-Added tile coordinates in the comments for the default tiles provided by the patches.
 	-Added a hex edit patch for vanilla tiles to compensate the fact that the provided tables in the super status
 	 bar patches only defaults the tiles for newly added tiles, not the vanilla tiles.
+	-Replaced "Statbar" with "DefaultTiles.png" with better explanation.
