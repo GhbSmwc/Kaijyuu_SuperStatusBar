@@ -23,10 +23,13 @@
 ;Super status bar settings:
 ;Notes:
 ; - Tile positions and enabling/disabling only works on the advanced version of the SSB patch.
-; - XY positions ranges X:00~31 and Y:00~04, represents a position, in units of 8x8 tiles, and must be integers. They increases going
-;   rightwards and downwards.
+; - XY positions ranges X:00~31 and Y:00~04, represents a position, in units of 8x8 tiles (not pixels), and must be integers. They
+;   increase going rightwards and downwards. All of them represents the leftmost tile of the display element.
 ; -- Any XY position of a counter placed outside that range, or is a counter that spans multiple tiles placed so its second or later
 ;    tiles goes out of range, would write data at invalid RAM address (causes glitches, or crashes, depending on the resulting RAM).
+;    A failsafe exists that would error out on the console should you enter such coordinates, however it only covers the XY position
+;    of the entered position (thus a coin counter entered at (31, 04) wouldn't error out, but 1s place would be written at
+;    !Freeram_SuperStatusBar_TileData+$140, which is beyond the last byte of the tile data).
 ; - Any multi-tile counters that would go past the right edge (X=31) would wrap back to the left and down 1 line like text.
 ; - Number without any prefix are decimal, a "$" prefix is hex, and "%" prefix is binary.
 ; - These only covers the counters, not the static tiles (coin symbol for the regular coin counter, the "X" for coin counter, bonus
@@ -51,39 +54,40 @@
 	endif
 		;^Valid values 0~7. This is the DMA channel to use. You would normally set this to some other unused channel to
 		; prevent glitches with other HDMA/DMA effects and mode 7 bosses. By default it should work with vanilla and SA-1.
-;Display settings
-	;Time (the digits, not the word "TIME")
+;Display settings (this only covers tiles that change, not static tiles or default tiles set during level load).
+	;Time (the digits, not the word "TIME"). Spans 3 tiles.
 		!Setting_SuperStatusBar_Time_Enable = 1		;>display time limit: 0 = false (will be black squares on 1st and 2nd digits,
 			;^Note that this alone doesn't disable time bonus on level completion.
 		!Setting_SuperStatusBar_Time_XPos #= 19
 		!Setting_SuperStatusBar_Time_YPos #= 3
 		!Setting_SuperStatusBar_Time_CountdownSpeed = $28	;>Number of frames between each the timer decrement, lower = faster. $28 by default, $3C would be real a second (1 frame = 1/60th of a second). NOTE: Setting this to 0 will decrement by 1 per frame.
 		!Setting_SuperStatusBar_Time_LowWarning = 1		;>0 = No, 1 = Yes (turns red below 100, beeps below 10).
-	;Score (numbers only). Note, this only covers the "active" digits, where the tiles can change. There is one inactive digit which is a fake "0" at the end and the score is actually stored in memory divided by 10
-	;(a "10" on the HUD means 1 in memory). That last 0 is a static tile not written every frame. If you move this, you'll need to modify the fake 0 as well (it shall be located at
-	;Score_XPos + 6, in this default case, 23+6 = 29), by setting its default tile to "$FC, %00111000" (assuming you didn't change the colors).
+	;Score (numbers only). Note, this only covers the "active" digits, where the tiles can change. There is one inactive digit which is a fake "0" at the end and the score is actually
+	;stored in memory divided by 10 (a "10" on the HUD means 1 in memory). That last 0 is a static tile not written every frame. If you move this, you'll need to modify the fake 0 as
+	;well (it shall be located at Score_XPos + 6, in this default case, 23+6 = 29), by setting its default tile to "$FC, %00111000" (assuming you didn't change the colors).
+	;This spans 6 tiles, not counting the fake "0".
 		!Setting_SuperStatusBar_Score_Enable = 1
 		!Setting_SuperStatusBar_Score_XPos #= 23
 		!Setting_SuperStatusBar_Score_YPos #= 3
-	;Lives
+	;Lives (spans 2 tiles)
 		!Setting_SuperStatusBar_Lives_Enable = 1	;>Disabling would only affect display
 		!Setting_SuperStatusBar_Lives_XPos #= 4
 		!Setting_SuperStatusBar_Lives_YPos #= 3
-	;Coin
+	;Coin (spans 2 tiles)
 		!Setting_SuperStatusBar_Coins_Enable = 1
 		!Setting_SuperStatusBar_Coins_XPos #= 28
 		!Setting_SuperStatusBar_Coins_YPos #= 2
-	;Player name ("MARIO"/"LUIGI")
+	;Player name ("MARIO"/"LUIGI", spans 5 tiles)
 		!Setting_SuperStatusBar_PlayerName_Enable = 1
 		!Setting_SuperStatusBar_PlayerName_XPos #= 2
 		!Setting_SuperStatusBar_PlayerName_YPos #= 2
-	;Yoshi/Dragon coin
+	;Yoshi/Dragon coin (spans 4 tiles)
 		!Setting_SuperStatusBar_DragonCoin_Enable = 1	;>Disabling would only affect display
 		!Setting_SuperStatusBar_DragonCoin_XPos #= 8
 		!Setting_SuperStatusBar_DragonCoin_YPos #= 2
 		!Setting_SuperStatusBar_DragonCoin_Empty = $FC	;>Tile number when yoshi coin is not collected
 		!Setting_SuperStatusBar_DragonCoin_Full = $2E	;>Tile number when yoshi coin is collected
-	;Bonus stars
+	;Bonus stars (spans 2 tiles wide, either a 2x2 8x8s or 2x1 8x8s depending on !Setting_SuperStatusBar_BonusStars_Enable being 1 or 2).
 		!Setting_SuperStatusBar_BonusStars_Enable = 1
 			;^Note that vanilla goal WILL STILL USE bonus stars, despite this disabled. Recommended using custom goal (or goal screen) instead.
 			; - 0 = Disable
@@ -91,7 +95,7 @@
 			; - 2 = Enable (8x8 digits)
 		!Setting_SuperStatusBar_BonusStars_XPos #= 12    ;\XY position, OF THE BOTTOM-LEFT CORNER of the 2x2 8x8 pixel tiles. If set to be 8x8 pixels rather than 8x16 pixels digits, then it's the 10s place digit.
 		!Setting_SuperStatusBar_BonusStars_YPos #= 03    ;/Note that if set to use 8x16 and is placed at Y=0, would write the top-half of the digits at invalid address, thus a failsafe is added.
-	;Item box
+	;Item box (the sprite itself, not the blue box around it)
 		!Setting_SuperStatusBar_ItemBox_PixelXPos         = $78 ;\XY position (in pixels) the item box is DISPLAYED, but not
 		!Setting_SuperStatusBar_ItemBox_PixelYPos         = $0F ;/where it drops from. Relative to screen.
 		!Setting_SuperStatusBar_ItemBox_DropPos_PixelXPos = $78 ;\XY position of a dropped item.
