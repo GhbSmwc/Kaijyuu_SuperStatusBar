@@ -1,4 +1,4 @@
-;This patch modifes the default vanilla tiles that were reused. See "DefaultTiles.png"
+;This patch modifies the default vanilla tiles that were reused. See "DefaultTiles.png"
 ;for reference. Yes, there is SmallHacker's status bar editor, but that tool is very old
 ;and one thing I personally don't like is that the UI is bad. You cannot paste text,
 ;select, or do anything like you would in a command prompt. Thus I provided a patch
@@ -9,7 +9,7 @@
 ; - With a mouse, click and drag, or;
 ; - hold down SHIFT, and expand the box with the arrow keys.
 ;
-;Tables here are the same format as the aformentioned patches' "DATA_TILES" table. Tile number $**, then %YXPCCCTT
+;Tables here are the same format as the aforementioned patches' "DATA_TILES" table. Tile number $**, then %YXPCCCTT
 ;
 ;Source: https://smwc.me/m/smw/rom/008C81
 	org $008C81
@@ -20,13 +20,13 @@
 			db $3A,%01111000	;>(17, 01)
 	org $008C89
 		;Top RAM-editable row:
-			db $30,%00101000	;>(02, 02) \Player name
+			db $30,%00101000	;>(02, 02) \Player name ("MARIO"/"LUIGI")
 			db $31,%00101000	;>(03, 02) |
 			db $32,%00101000	;>(04, 02) |
 			db $33,%00101000	;>(05, 02) |
 			db $34,%00101000	;>(06, 02) /
 			db $FC,%00111000	;>(07, 02)
-			db $FC,%00111100	;>(08, 02) \Yoshi coin counter (via repeated icons)
+			db $FC,%00111100	;>(08, 02) \Yoshi coin counter
 			db $FC,%00111100	;>(09, 02) |
 			db $FC,%00111100	;>(10, 02) |
 			db $FC,%00111100	;>(11, 02) /
@@ -60,10 +60,10 @@
 			db $FC,%00111000	;>(11, 03)
 			db $FC,%00111000	;>(12, 03) \Lower half of bonus stars
 			db $FC,%00111000	;>(13, 03) /
-			db $4A,%00111000	;>(14, 03) >Part of Item box border
+			db $4A,%00111000	;>(14, 03) >Part of item box border
 			db $FC,%00111000	;>(15, 03) \Space for item box sprite
 			db $FC,%00111000	;>(16, 03) /
-			db $4A,%01111000	;>(17, 03) >Part of Item box border
+			db $4A,%01111000	;>(17, 03) >Part of item box border
 			db $FC,%00111000	;>(18, 03)
 			db $FE,%00111100	;>(19, 03) \Time digits
 			db $FE,%00111100	;>(20, 03) |

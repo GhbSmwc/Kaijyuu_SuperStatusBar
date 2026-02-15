@@ -54,7 +54,7 @@ DATA_TILES:
 	;second is the properties %YXPCCCTT:
 	; - TT = (ranges 0~3) Page number (normally you have this set to 0 or 1)
 	; - CCC = (ranges 0~7) Palette (color) to use (2 for player name, 6 for most white-colored stuff, 7 for coin and time).
-	;   Note that because it is 2BPP graphics, pixels can only have 4 options: 1 for transperency, and 3 others for colors.
+	;   Note that because it is 2BPP graphics, pixels can only have 4 options: 1 for transparency, and 3 others for colors.
 	; - P = (0~1) Priority (you most likely have this set to 1 if you don't want the HUD element to go behind stuff)
 	; - X = (0~1) X-flip
 	; - Y = (0~1) Y-flip
