@@ -1,6 +1,10 @@
-;This patch modifes the default vanilla tiles that were reused despite the super status bar patches
-;"Advanced" and "Compatability" being applied. See DefaultTiles.png for reference.
-;If you want to easily change all tiles here within a column more easily, I strongly recommend
+;This patch modifes the default vanilla tiles that were reused. See "DefaultTiles.png"
+;for reference. Yes, there is SmallHacker's status bar editor, but that tool is very old
+;and one thing I personally don't like is that the UI is bad. You cannot paste text,
+;select, or do anything like you would in a command prompt. Thus I provided a patch
+;version of this.
+;
+;If you want to easily change all tiles here within a column more easily, I recommend
 ;using notepad++, and hold down ALT, then either:
 ; - With a mouse, click and drag, or;
 ; - hold down SHIFT, and expand the box with the arrow keys.
@@ -26,10 +30,10 @@
 			db $FC,%00111100	;>(09, 02) |
 			db $FC,%00111100	;>(10, 02) |
 			db $FC,%00111100	;>(11, 02) /
-			db $FC,%00111000	;>(12, 02) \Upper half of bonus stars
+			db $FC,%00111000	;>(12, 02) \Upper half of bonus stars counter
 			db $FC,%00111000	;>(13, 02) /
 			db $4A,%00111000	;>(14, 02) >Part of item box border
-			db $FC,%00111000	;>(15, 02) \Space for sprite item box sprite
+			db $FC,%00111000	;>(15, 02) \Space for item box sprite
 			db $FC,%00111000	;>(16, 02) /
 			db $4A,%01111000	;>(17, 02) >Part of item box border
 			db $FC,%00111000	;>(18, 02)
@@ -51,10 +55,10 @@
 			db $FC,%00111000	;>(06, 03)
 			db $FC,%00111000	;>(07, 03)
 			db $FC,%00111000	;>(08, 03)
-			db $64,%00101000	;>(09, 03) >Star symbol
+			db $64,%00101000	;>(09, 03) >Bonus star symbol
 			db $26,%00111000	;>(10, 03) >"X"
 			db $FC,%00111000	;>(11, 03)
-			db $FC,%00111000	;>(12, 03) \Lower half of Bonus stars
+			db $FC,%00111000	;>(12, 03) \Lower half of bonus stars
 			db $FC,%00111000	;>(13, 03) /
 			db $4A,%00111000	;>(14, 03) >Part of Item box border
 			db $FC,%00111000	;>(15, 03) \Space for item box sprite
@@ -71,7 +75,7 @@
 			db $FC,%00111000	;>(26, 03) |
 			db $FC,%00111000	;>(27, 03) |
 			db $FC,%00111000	;>(28, 03) /
-			db $00,%00111000	;>(29, 03) >Score (static 0, not written every frame)
+			db $00,%00111000	;>(29, 03) >Score (static/inactive 0, not written every frame)
 	org $008CF7
 		;Bottom 4 tiles of the item box
 			db $3A,%10111000	;>(14, 04)

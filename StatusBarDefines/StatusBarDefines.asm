@@ -151,12 +151,3 @@
 		
 		!Setting_SuperStatusBar_Reg_43X0 #= $4300+(!Setting_SuperStatusBar_DMAChannel<<4)
 		!Setting_SuperStatusBar_Reg_DMAEnable = (1<<!Setting_SuperStatusBar_DMAChannel)
-;Valid numbers for these offsets: $000-$13F
-;Use even numbers ONLY!
-;Properties (palette/ect) are set in the DATA_TILES tables, or using Smallhacker's status bar editor
-;They are not updated automatically if you just change these 
-;If you move the time counter, for example, it will probably be white until you change the properties byte
-;of the tiles it writes to (through ASM, since it writes using DMA).
-
-;If you want to remove a counter/routine controlled tile(s), change the "1"'s in labels that have "!Enable"
-;in its name to 0. Note that it does not guarantee there will be a blank tile left behind when removed.

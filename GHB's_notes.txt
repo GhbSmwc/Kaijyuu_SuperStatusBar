@@ -3,6 +3,8 @@ to 8.
 
 This is a tip made by GreenHammerBro to ASM-mers on how to use the Advanced super status bar (ASSB) with other codes/ASM.
 
+If you are new to using the status bar, and how to use it, see https://www.smwcentral.net/?p=section&a=details&id=39627
+
 Contents:
 	1: The ASSB's RAM format and how to adopt codes to it
 	2: Hex-edit patches
@@ -18,7 +20,7 @@ Contents:
 	$008C81 to $008CFE, yes, I said ROM address, meaning you cannot change
 	the tile properties themselves in-game.
 
-	The super status bar patch's data is formated like this:
+	The super status bar patch's data is formated like this in RAM formatted same way as $008C81:
 		!Freeram_SuperStatusBar_TileData+0 ($7FA000/$404000 default)	;>Topmost and leftmost tile number
 		!Freeram_SuperStatusBar_TileData+1 ($7FA001/$404001 default)	;>Same as above, but properties (YXPCCCTT)
 		!Freeram_SuperStatusBar_TileData+2 ($7FA002/$404002 default)	;>Topmost, second leftmost tile
