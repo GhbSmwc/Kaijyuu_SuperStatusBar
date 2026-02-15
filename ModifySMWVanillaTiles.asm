@@ -1,11 +1,13 @@
-;This patch modifes the vanilla tiles that were reused despite the super status bar patches "Advanced" and
-;"Compatability" being applied. See DefaultTiles.png for reference.
-;If you want to easily change all tiles within a row more easily, I strongly recommend using notepad++,
-;and hold down ALT, then either:
+;This patch modifes the default vanilla tiles that were reused despite the super status bar patches
+;"Advanced" and "Compatability" being applied. See DefaultTiles.png for reference.
+;If you want to easily change all tiles here within a column more easily, I strongly recommend
+;using notepad++, and hold down ALT, then either:
 ; - With a mouse, click and drag, or;
 ; - hold down SHIFT, and expand the box with the arrow keys.
 ;
-;Tables here are the same format as the aformentioned patches.
+;Tables here are the same format as the aformentioned patches' "DATA_TILES" table. Tile number $**, then %YXPCCCTT
+;
+;Source: https://smwc.me/m/smw/rom/008C81
 	org $008C81
 		;Top 4 tiles of the item box
 			db $3A,%00111000	;>(14, 01)
@@ -27,7 +29,7 @@
 			db $FC,%00111000	;>(12, 02) \Upper half of bonus stars
 			db $FC,%00111000	;>(13, 02) /
 			db $4A,%00111000	;>(14, 02) >Part of item box border
-			db $FC,%00111000	;>(15, 02) \Space for sprite item box
+			db $FC,%00111000	;>(15, 02) \Space for sprite item box sprite
 			db $FC,%00111000	;>(16, 02) /
 			db $4A,%01111000	;>(17, 02) >Part of item box border
 			db $FC,%00111000	;>(18, 02)
@@ -55,7 +57,7 @@
 			db $FC,%00111000	;>(12, 03) \Lower half of Bonus stars
 			db $FC,%00111000	;>(13, 03) /
 			db $4A,%00111000	;>(14, 03) >Part of Item box border
-			db $FC,%00111000	;>(15, 03) \Space for item box border
+			db $FC,%00111000	;>(15, 03) \Space for item box sprite
 			db $FC,%00111000	;>(16, 03) /
 			db $4A,%01111000	;>(17, 03) >Part of Item box border
 			db $FC,%00111000	;>(18, 03)

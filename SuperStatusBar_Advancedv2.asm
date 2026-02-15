@@ -74,11 +74,11 @@ DATA_TILES:	;This is the data for the tiles not regularly uploaded by SMW
 	; -- %00111000 = $38 in hex (in case if viewed from debugger that only displays hex values in the memory editor).
 	;    The values are:
 	;    %00111000
-	;           ^^ = (value 0) Page 0
-	;        ^^^   = (value 6) Palette 6
-	;       ^      = (value 1) Priority on (shall go in front of everything)
-	;      ^       = (value 0) No X-flip
-	;     ^        = (value 0) No Y-flip
+	;           ^^ = (value %00 = 0) Page 0
+	;        ^^^   = (value %110 = 6) Palette 6
+	;       ^      = (value %1 = 1) Priority on (shall go in front of everything)
+	;      ^       = (value %0 = 0) No X-flip
+	;     ^        = (value %0 = 0) No Y-flip
 	
 	;This whole block is the top row of status bar tile space.
 	db $FC,%00111000		;>(00, 00)
