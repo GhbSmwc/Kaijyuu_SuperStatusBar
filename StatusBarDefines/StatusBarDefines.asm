@@ -8,7 +8,8 @@
 	else
 		!Freeram_SuperStatusBar_TileData	#= $404000
 	endif
-		;^Freeram for status bar (needs $140 (320 decimal) bytes). These are the tile data, of all 160 tiles in a 32x5 grid, in the format of
+		;^Freeram for status bar (needs $140 (320 decimal) bytes). These are the tile data, of all 160 tiles in a
+		; 32x5 grid, in the format of:
 		; !Freeram_SuperStatusBar_TileData+0: TTTTTTTT of Tile 0 (X=00, Y=00)
 		; !Freeram_SuperStatusBar_TileData+1: YXPCCCTT of Tile 0 (X=00, Y=00)
 		; !Freeram_SuperStatusBar_TileData+2: TTTTTTTT of Tile 1 (X=01, Y=00)
@@ -24,23 +25,29 @@
 ;Notes:
 ; - Tile positions and enabling/disabling only works on the advanced version of the SSB patch.
 ; - XY positions ranges X:00~31 and Y:00~04, represents a position, in units of 8x8 tiles (not pixels), and must be integers. They
-;   increase going rightwards and downwards. All of them represents the leftmost tile of the display element.
+;   increase going rightwards and downwards. All coordinate settings here represents the leftmost tile of the display element.
 ; -- Any XY position of a counter placed outside that range, or is a counter that spans multiple tiles placed so its second or later
-;    tiles goes out of range, would write data at invalid RAM address (causes glitches, or crashes, depending on the resulting RAM).
+;    tiles goes out of range, may write data at invalid RAM address (causes glitches, or crashes, depending on the resulting RAM).
 ;    A failsafe exists that would error out on the console should you enter such coordinates, however it only covers the XY position
-;    of the entered position (thus a coin counter entered at (31, 04) wouldn't error out, but 1s place would be written at
+;    of the entered value (thus a coin counter entered at (31, 04) wouldn't error out, but 1s place would be written at
 ;    !Freeram_SuperStatusBar_TileData+$140, which is beyond the last byte of the tile data).
 ; - Any multi-tile counters that would go past the right edge (X=31) would wrap back to the left and down 1 line like text.
 ; - Number without any prefix are decimal, a "$" prefix is hex, and "%" prefix is binary.
-; - These only covers the counters, not the static tiles (coin symbol for the regular coin counter, the "X" for coin counter, bonus
-;   stars and lives).
+; - These only covers the "active" counters, not the static tiles (coin symbol for the regular coin counter, the "X" for coin
+;   counter, bonus stars and lives, and the last digit of "0" of the score).
 ; - Defines with !Setting_SuperStatusBar_<Counter>_Enable means: 0 = disable (will leave out default static tiles), 1 = enable.
 ;   Note that some counters do have its code with gameplay impact (beyond just informing the player) in the status bar code, which
 ;   is also subject to being disabled as well (disabling the timer, for example, would also remove the actual time limit rather
 ;   than just making the timer invisible).
 ; - Default tile numbers and properties are in "DATA_TILES", or using Smallhacker's status bar editor. Note that this added table
 ;   to the game is for new row of tiles. Original tiles not provided by this patch are from a reused vanilla table at $008C81~$008CFE:
-;   https://smwc.me/m/smw/rom/008C81
+;   https://smwc.me/m/smw/rom/008C81, which can be modified by patching this ASM resource's "ModifySMWVanillaTiles.asm".
+; - There are placeholder default tiles overwritten by the counter display element, shown when disabling or moving them to another
+;   location. For example, with the timer digits moved or removed, it shows 2 black squares, followed by a "0", which are:
+; -- $008CE1~$008CE2: $FE,%00111100 ;>(19, 03) \These two are tile $FE, which is a black square near the bottom-right corner as seen
+; -- $008CE3~$008CE4: $FE,%00111100 ;>(20, 03) /on LM's layer 3 Level's 8x8 viewer.
+; -- $008CE5~$008CE6: $00,%00111100 ;>(21, 03) >$00 is the graphic for "0".
+;   %00111100 represents a tile property of using palette 7, with tile property.
 
 ;Register settings
 	!Setting_SuperStatusBar_IRQYPos = $26
@@ -62,10 +69,12 @@
 		!Setting_SuperStatusBar_Time_YPos #= 3
 		!Setting_SuperStatusBar_Time_CountdownSpeed = $28	;>Number of frames between each the timer decrement, lower = faster. $28 by default, $3C would be real a second (1 frame = 1/60th of a second). NOTE: Setting this to 0 will decrement by 1 per frame.
 		!Setting_SuperStatusBar_Time_LowWarning = 1		;>0 = No, 1 = Yes (turns red below 100, beeps below 10).
-	;Score (numbers only). Note, this only covers the "active" digits, where the tiles can change. There is one inactive digit which is a fake "0" at the end and the score is actually
-	;stored in memory divided by 10 (a "10" on the HUD means 1 in memory). That last 0 is a static tile not written every frame. If you move this, you'll need to modify the fake 0 as
-	;well (it shall be located at Score_XPos + 6, in this default case, 23+6 = 29), by setting its default tile to "$FC, %00111000" (assuming you didn't change the colors).
-	;This spans 6 tiles, not counting the fake "0".
+	;Score (numbers only). Note, this only covers the "active" digits, where the tiles can change in-game. There is one
+	;"inactive" digit which is a fake "0" at the end and the score value is actually stored in memory divided by 10 (a
+	;"10" on the HUD means 1 in memory). That last 0 is a static tile not written every frame. If you move the score,
+	;you'll need to modify the fake 0 as well (it shall be located at Score_XPos + 6, in this default case, 23+6 = 29),
+	;by setting its default tile to "$FC, %00111000" (assuming you didn't change the colors). This spans 6 tiles, not
+	;counting the fake "0".
 		!Setting_SuperStatusBar_Score_Enable = 1
 		!Setting_SuperStatusBar_Score_XPos #= 23
 		!Setting_SuperStatusBar_Score_YPos #= 3
